@@ -1,0 +1,1134 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1基础组成汇编指令（核心） 伪指令 其他符号：+ - * &#x2F;等 ，由编译器识别 指令与数据相同的二进制信息，计算机既可以看作数据，也可以看作指令。 CPU对存储器的读写必要的三类信息的交互：存储单元的地址（地址信息） 器件的选择，读或写（控制信息） 数据（数据信息） 2.寄存器通用寄存器：字的位数叫作字长，cpu一次处理二进制代码的位数。 对16位寄存器（只能放4位16进制数据） 例如：AX BX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言">
+<meta property="og:url" content="http://lekclc.github.io/2023/09/12/%E6%B1%87%E7%BC%96/index.html">
+<meta property="og:site_name" content="lc">
+<meta property="og:description" content="1基础组成汇编指令（核心） 伪指令 其他符号：+ - * &#x2F;等 ，由编译器识别 指令与数据相同的二进制信息，计算机既可以看作数据，也可以看作指令。 CPU对存储器的读写必要的三类信息的交互：存储单元的地址（地址信息） 器件的选择，读或写（控制信息） 数据（数据信息） 2.寄存器通用寄存器：字的位数叫作字长，cpu一次处理二进制代码的位数。 对16位寄存器（只能放4位16进制数据） 例如：AX BX">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/lengkc/image@master/bj/2023-02-09-221712.3t0v6kpep4y0.webp">
+<meta property="article:published_time" content="2023-09-12T04:29:47.000Z">
+<meta property="article:modified_time" content="2023-09-13T15:04:47.034Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/lengkc/image@master/bj/2023-02-09-221712.3t0v6kpep4y0.webp">
+  
+  
+  
+  <title>汇编语言 - lc</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lekclc.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lc</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="汇编语言"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-12 12:29" pubdate>
+          2023年9月12日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          89 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">汇编语言</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1基础"><a href="#1基础" class="headerlink" title="1基础"></a>1基础</h1><h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>汇编指令（核心）</p>
+<p>伪指令</p>
+<p>其他符号：+ - * /等 ，由编译器识别</p>
+<h2 id="指令与数据"><a href="#指令与数据" class="headerlink" title="指令与数据"></a>指令与数据</h2><p>相同的二进制信息，计算机既可以看作数据，也可以看作指令。</p>
+<h2 id="CPU对存储器的读写"><a href="#CPU对存储器的读写" class="headerlink" title="CPU对存储器的读写"></a>CPU对存储器的读写</h2><h5 id="必要的三类信息的交互："><a href="#必要的三类信息的交互：" class="headerlink" title="必要的三类信息的交互："></a>必要的三类信息的交互：</h5><p>存储单元的地址（地址信息）</p>
+<p>器件的选择，读或写（控制信息）</p>
+<p>数据（数据信息）</p>
+<h1 id="2-寄存器"><a href="#2-寄存器" class="headerlink" title="2.寄存器"></a>2.寄存器</h1><h2 id="通用寄存器："><a href="#通用寄存器：" class="headerlink" title="通用寄存器："></a>通用寄存器：</h2><p>字的位数叫作字长，cpu一次处理二进制代码的位数。</p>
+<p>对16位寄存器（只能放4位16进制数据）</p>
+<p>例如：AX BX CX DX（8086cpu）</p>
+<p>AX可以分为AH，AL（两个8位寄存器）（其余同）</p>
+<p>当al或者ah被单独操作时，它们是独立的</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-keyword">mov</span> a,<span class="hljs-keyword">b</span>	<span class="hljs-comment">//a=b</span><br><span class="hljs-keyword">add</span> a,<span class="hljs-keyword">b</span> <span class="hljs-comment">//a=a+b</span><br></code></pre></td></tr></table></figure>
+
+<p>当寄存器中16进制时超出4位，进位不会被保存</p>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>对于16位：</p>
+<p>运算器一次性最多处理16位</p>
+<p>寄存器最大16位</p>
+<p>寄存器与运算器通路16位</p>
+<h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>每一个内存单元在存储空间（一维的线性空间）中的唯一地址</p>
+<p>例如</p>
+<p>8086cpu有20位地址总线，又是16位的</p>
+<p>会采用使用2个16位地址来合成一个20位的物理地址（段地址+偏移地址）（在地址加法器中）</p>
+<p>物理地址=段地址*16（又叫左移4个二进制位）+偏移地址</p>
+<h2 id="段"><a href="#段" class="headerlink" title="段"></a>段</h2><p>对于16位</p>
+<p>偏移地址为16位（64kb），段的最大长度为64kb</p>
+<h4 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h4><p>存放段地址</p>
+<p>例如8086cpu由CS,DS,SS,ES（4个段寄存器）存放段地址</p>
+<h2 id="8086cpu"><a href="#8086cpu" class="headerlink" title="8086cpu"></a>8086cpu</h2><p>cpu会从M（CS内容）*16+N（IP内容）单元开始</p>
+<h5 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h5><p>代码段寄存器</p>
+<h5 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h5><p>指令指针寄存器</p>
+<h4 id="修改CS与IP"><a href="#修改CS与IP" class="headerlink" title="修改CS与IP"></a>修改CS与IP</h4><p>使用jmp指令（16进制）</p>
+<p>jmp 段地址:偏移地址</p>
+<p>用段地址修改CS，用偏移地址修改IP</p>
+<h5 id="仅修改ip"><a href="#仅修改ip" class="headerlink" title="仅修改ip"></a>仅修改ip</h5><p>jmp 某一个合法寄存器</p>
+<p>用寄存器中的值修改IP</p>
+<h2 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h2><p>编程时，将一组内存单元定义为一个段，将一组代码存在这一组单元中，便定义了一个代码段</p>
+<p>由于cpu只认CS:IP，cpu不会因为这种定义就把它们当作指令执行</p>
+<p>要将CS:IP指向代码段第一条指令的首地址，代码段才得到执行</p>
+<h1 id="3-寄存器（内存访问）"><a href="#3-寄存器（内存访问）" class="headerlink" title="3.寄存器（内存访问）"></a>3.寄存器（内存访问）</h1><h2 id="字的存储"><a href="#字的存储" class="headerlink" title="字的存储"></a>字的存储</h2><p>对于一个16位的寄存器，高8位放高字节，低8位放低字节</p>
+<p>例如有0，1两个存储单元，对于4E20H；</p>
+<p>0（低位）：20，1（高位）：4E</p>
+<p>字单元：存放一个字型数据的内存单元</p>
+<p>对于一个起始地址为N的字单元，简称为N地址单元</p>
+<h2 id="DS与address"><a href="#DS与address" class="headerlink" title="DS与address"></a>DS与address</h2><p>在8086cpu中，有一个DS寄存器，存放要访问的数据的段地址</p>
+<p>对于    mov al,[0]</p>
+<p>将一个内存单元中的内容送入一个寄存器</p>
+<p>[0]表示一个内存单元，0表示偏移地址，段地址是DS里的数据</p>
+<p>由于8086不支持直接送入数据到DS，可以使用一个寄存器进行中转（如bx）</p>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><p>mov</p>
+<p>add（加法）</p>
+<p>sub（减法）</p>
+<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>特殊的存储空间，后进先出</p>
+<p>基本操作：入栈（push），出栈（pop）</p>
+<p>push ax（ax的数据入栈）</p>
+<p>pop ax（栈的数据入ax）</p>
+<h5 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h5><p>对8086cpu</p>
+<p>段寄存器SS    寄存器SP</p>
+<p>SS：段顶地址    SP：偏移地址</p>
+<p>SS:SP永远指向栈顶地址</p>
+<h5 id="栈顶超界"><a href="#栈顶超界" class="headerlink" title="栈顶超界"></a>栈顶超界</h5><p>在栈顶超出空间后，执行push会使得超出部分被覆盖</p>
+<h5 id="栈段"><a href="#栈段" class="headerlink" title="栈段"></a>栈段</h5><p>在一个段内，可以将空间当作栈用，以栈的形式访问，这个空间就是栈段。</p>
+<h1 id="4-第一个程序"><a href="#4-第一个程序" class="headerlink" title="4.第一个程序"></a>4.第一个程序</h1><h2 id="源程序写出到执行"><a href="#源程序写出到执行" class="headerlink" title="源程序写出到执行"></a>源程序写出到执行</h2><p>1.编写源程序    产生文本文件</p>
+<p>2.先编译产生目标文件，在进行连接，生成可执行文件（程序+描述信息）</p>
+<p>3.执行程序</p>
+<p>操作系统依照描述信息，加载机器码与数据</p>
+<p>初始化（例如CS:IP）后执行</p>
+<h2 id="源程序"><a href="#源程序" class="headerlink" title="源程序"></a>源程序</h2><p>汇编语言源程序包含</p>
+<p>1.汇编指令（有对应的机器码，可以被cpu执行）</p>
+<p>2.伪指令（没有对应的机器码，无法被cpu执行）</p>
+<h4 id="伪指令"><a href="#伪指令" class="headerlink" title="伪指令"></a>伪指令</h4><p>由编译器执行</p>
+<p>1.</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">XXX segment		<span class="hljs-regexp">//</span>开始<br>	<span class="hljs-regexp">//</span>定义一个段，XXX为段名<br>XXX ends	<span class="hljs-regexp">//</span>结束<br></code></pre></td></tr></table></figure>
+
+<p>2.</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">end	<span class="hljs-comment">//汇编程序的结束标志</span><br></code></pre></td></tr></table></figure>
+
+<p>2.</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span>	//假设，假设某一寄存器与程序中的一个段关联，通过<span class="hljs-meta">assume</span>说明<br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:codesg	//将寄存器<span class="hljs-built_in">cs</span>与段codesg关联<br></code></pre></td></tr></table></figure>
+
+<h4 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h4><p>由段组成</p>
+<h4 id="程序返回"><a href="#程序返回" class="headerlink" title="程序返回"></a>程序返回</h4><p>对于一个程序p2，必须有一个运行中的p1，将p2加载入内存，使p2获得cpu的控制权，p2才正常运行；</p>
+<p>p2运行中p1停止，在p2运行结束，cpu控制权返回p1，p1继续运行</p>
+<h5 id="如何返回："><a href="#如何返回：" class="headerlink" title="如何返回："></a>如何返回：</h5><p>由cpu执行</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00H</span><br><span class="hljs-keyword">int</span> <span class="hljs-number">21H</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="编译连接"><a href="#编译连接" class="headerlink" title="编译连接"></a>编译连接</h2><h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>在将源程序文件编译后，会得到一个 .obj 为后缀的目标文件 .obj</p>
+<p>（列表文件 .lst ，交叉引用文件 .crf ）：编译器为目标文件过程中的中间结果，可忽略</p>
+<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>运行连接器，设定目标文件路径+文件，设定可执行文件路劲+文件，输入要连接的库文件，生成可执行文件（.exe）</p>
+<p>库文件：包含了一些可以调用的子程序</p>
+<p>映像文件：中间结果，忽略</p>
+<h4 id="简化的编译以及连接"><a href="#简化的编译以及连接" class="headerlink" title="简化的编译以及连接"></a>简化的编译以及连接</h4><p>编译和连接中的中间文件都可以忽略</p>
+<h5 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h5><p>在编译器后加上源文件路径+文件，加上分号</p>
+<p>编译器会在当前路径生成目标文件，忽略中间文件的生成</p>
+<h5 id="连接-1"><a href="#连接-1" class="headerlink" title="连接"></a>连接</h5><p>在连接器后加上目标文件的路径+文件名，加上分号</p>
+<p>连接器会在当前路径生成可执行文件，忽略中间文件</p>
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><h4 id="装载进入内存"><a href="#装载进入内存" class="headerlink" title="装载进入内存"></a>装载进入内存</h4><p>在DOC中，command将可执行文件加载进内存</p>
+<p>command设置cpu的CS:IP指向程序的第一条指令</p>
+<p>运行结束后，会返回command，command继续运行</p>
+<h4 id="执行过程的跟踪"><a href="#执行过程的跟踪" class="headerlink" title="执行过程的跟踪"></a>执行过程的跟踪</h4><p>Debug将程序加载入内存，同时Debug依旧保持对cpu的控制</p>
+<p>r命令查看各个寄存器的设置情况</p>
+<p>u命令可以查看载入的指令</p>
+<p>t命令单步执行每一条指令</p>
+<p>（执行int 21后     结束程序）int 21要使用p命令</p>
+<p>在返回Debug，使用Q命令退出</p>
+<h5 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h5><p>在DOC中，</p>
+<p>找一个起始地址为    SA:0    且足够的内存空间，前256字节为PSP数据区（DOS通过它与程序通信），从SA+10H:0开始装入程序；</p>
+<p>将该内存区的段地址装入ds（DS=SA），设定CS:IP</p>
+<h1 id="5-BX-和loop"><a href="#5-BX-和loop" class="headerlink" title="5.[BX]和loop"></a>5.[BX]和loop</h1><h2 id="bx-与内存单元"><a href="#bx-与内存单元" class="headerlink" title="[bx]与内存单元"></a>[bx]与内存单元</h2><h3 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h3><p>描述一个内存单元：内存单元地址+长度（类型）</p>
+<p>对于</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">0</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>]<br></code></pre></td></tr></table></figure>
+
+<p>将一个内存单元的内容送入ax</p>
+<p>[0]表示偏移地址为0，段地址在ds中</p>
+<p>[bx]表示一个内存单元，偏移地址在bx中，段地址在ds中（偏移地址EA=(bx)    段地址SA=(ds)）</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">bx</span>],<span class="hljs-built_in">ax</span><br></code></pre></td></tr></table></figure>
+
+<p>将ax中的数据送入SA:EA</p>
+<h4 id="idata"><a href="#idata" class="headerlink" title="idata"></a>idata</h4><p>表示常量</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[idata]代表<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">1</span>]	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">2</span>]等<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,idata代表<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">1</span>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">2</span>等<br></code></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title="()"></a>()</h3><p>1.寄存器名    2.段寄存器名    3.物理地址</p>
+<p>描述性的符号</p>
+<p>例如</p>
+<p>(ax)表示ax中的内容</p>
+<p>(20000H)表示内存20000H单元的内容</p>
+<p>对于    ((ds)*16+(bx))</p>
+<p>(ds)为段地址，(bx)为偏移地址的内存单元的内容</p>
+<h4 id="段前缀"><a href="#段前缀" class="headerlink" title="段前缀"></a>段前缀</h4><p>显式指明内存单元的段地址的，为段前缀</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">ds</span>:[<span class="hljs-built_in">bx</span>]	//<span class="hljs-built_in">ds</span>为段地址<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">cs</span>:[<span class="hljs-built_in">bx</span>]	//<span class="hljs-built_in">cs</span>为段地址<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span> <span class="hljs-built_in">ss</span>:[<span class="hljs-number">0</span>]	//<span class="hljs-built_in">ss</span>为段地址<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span> <span class="hljs-built_in">es</span>:[<span class="hljs-number">0</span>]	//<span class="hljs-built_in">es</span>为段地址<br></code></pre></td></tr></table></figure>
+
+<h3 id="inc"><a href="#inc" class="headerlink" title="inc"></a>inc</h3><p>例如</p>
+<p>inc bx</p>
+<p>bx中的内容加上1</p>
+<h2 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h2><h3 id="执行-1"><a href="#执行-1" class="headerlink" title="执行"></a>执行</h3><p>与循环有关</p>
+<p>执行loop：</p>
+<p>1    (cx)=(cx)-1</p>
+<p>2    判断cx的值，不为0执行程序，为0向下执行</p>
+<p>使用loop执行循环功能，cx存放循环次数</p>
+<p>例如：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br>code <span class="hljs-meta">segment</span><br>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">2</span><br>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">11</span><br><span class="hljs-symbol">s:</span>	<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">ax</span><br>	<span class="hljs-keyword">loop</span> s<br>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00h</span><br>	<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end<br>将<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">ax</span>的操作执行了<span class="hljs-number">11</span>次<br></code></pre></td></tr></table></figure>
+
+<p>普遍</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,循环次数<br><span class="hljs-symbol">s:</span>	<br>	循环的代码段<br>	<span class="hljs-keyword">loop</span> s<br></code></pre></td></tr></table></figure>
+
+<p>loop指令的标号要在前</p>
+<p>循环执行的代码段要在标号与loop中间</p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><p>r命令查看各个寄存器的设置情况</p>
+<p>u命令可以查看载入的指令</p>
+<p>t命令单步执行每一条指令</p>
+<p>int 21要使用p命令</p>
+<p>g命令：对    g 0012    表示从CS:IP开始执行，一直到(IP)=0012h</p>
+<p>p命令：可以一次性执行完程序</p>
+<h3 id="与-bx-的联合"><a href="#与-bx-的联合" class="headerlink" title="与[bx]的联合"></a>与[bx]的联合</h3><h4 id="将8位数据加到16位寄存器"><a href="#将8位数据加到16位寄存器" class="headerlink" title="将8位数据加到16位寄存器"></a>将8位数据加到16位寄存器</h4><h5 id="普通加法"><a href="#普通加法" class="headerlink" title="普通加法"></a>普通加法</h5><p>1    (dx)=(dx)+内存中的8位数据    //运算对象不匹配</p>
+<p>2    (dl)=(dl)+内存中的8位数据    //结果可能超界</p>
+<p>使用一个16位寄存器作为中介</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,offffh<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>,<span class="hljs-built_in">ax</span>	//设置<span class="hljs-built_in">ds</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">ds</span>:[x]    //<span class="hljs-built_in">ds</span>:x指向fff:x单元<br><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>,<span class="hljs-number">0</span>		//<span class="hljs-built_in">ax</span>=((<span class="hljs-built_in">ds</span>)*<span class="hljs-number">16</span>+(x))=(ffffxh)<br><span class="hljs-keyword">add</span> <span class="hljs-built_in">dx</span>,<span class="hljs-built_in">ax</span>		//向<span class="hljs-built_in">dx</span>中加入ffff:x单元的数值<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Debug与汇编编译器对指令的不同处理"><a href="#Debug与汇编编译器对指令的不同处理" class="headerlink" title="Debug与汇编编译器对指令的不同处理"></a>Debug与汇编编译器对指令的不同处理</h2><h3 id="不同"><a href="#不同" class="headerlink" title="不同"></a>不同</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">0</span>]<br>在编译器中，被当作	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">0</span><br>在Debug中，被当作   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">0</span>]<br></code></pre></td></tr></table></figure>
+
+<h3 id="在编译器使用内存单元"><a href="#在编译器使用内存单元" class="headerlink" title="在编译器使用内存单元"></a>在编译器使用内存单元</h3><p>1.将偏移地址送入bx寄存器，以[bx]的形式访问内存单元</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,[<span class="hljs-built_in">bx</span>]<br></code></pre></td></tr></table></figure>
+
+<p>2.在[]的前面给出段地址所在的段寄存器</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">2000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>,<span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">ds</span>:[<span class="hljs-number">0</span>]<br></code></pre></td></tr></table></figure>
+
+<h2 id="安全的空间"><a href="#安全的空间" class="headerlink" title="安全的空间"></a>安全的空间</h2><p>随意向内存空间写入是危险的</p>
+<p>当我们要直接向内存写入内容，要先找一段安全的内存空间</p>
+<h1 id="6-多个段的程序"><a href="#6-多个段的程序" class="headerlink" title="6.多个段的程序"></a>6.多个段的程序</h1><h2 id="获取空间"><a href="#获取空间" class="headerlink" title="获取空间"></a>获取空间</h2><p>1    加载程序时进行分配（在源程序中说明）</p>
+<p>2    执行过程中向系统申请</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>当程序入口不是我们希望执行的命令，要指明程序的入口</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br>code <span class="hljs-meta">segment</span><br>	<span class="hljs-built_in">dw</span> <span class="hljs-number">0123h</span>,<span class="hljs-number">0456h</span>,<span class="hljs-number">0789h</span>,<span class="hljs-number">0abch</span><br><span class="hljs-symbol">start:</span>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00h</span><br>		<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end start	//end除了通知编译器程序的结束，还可以通知程序的入口，此时start所指向的指令是程序的第一条指令<br></code></pre></td></tr></table></figure>
+
+<p>start指向的入口，转化为入口地址，存储在可执行文件的描述信息中</p>
+<h3 id="安排程序框架"><a href="#安排程序框架" class="headerlink" title="安排程序框架"></a>安排程序框架</h3><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gauss">assume cs:<span class="hljs-built_in">code</span><br><span class="hljs-built_in">code</span> segment<br>	数据<br>start:	<br>		代码<br><span class="hljs-built_in">code</span> ends<br><span class="hljs-keyword">end</span> start<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用数据"><a href="#使用数据" class="headerlink" title="使用数据"></a>使用数据</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-built_in">dw</span> <span class="hljs-number">0123h</span>,<span class="hljs-number">0456h</span>,<span class="hljs-number">0789h</span>,<span class="hljs-number">0abch</span><br><span class="hljs-built_in">dw</span>	（define <span class="hljs-built_in">word</span>）		定义字型数据，一个数据占据的空间为一个字<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用栈"><a href="#使用栈" class="headerlink" title="使用栈"></a>使用栈</h3><p>利用栈，将程序定义的数据逆序存放</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:codesg<br>code <span class="hljs-meta">segment</span><br>	<span class="hljs-built_in">dw</span> <span class="hljs-number">0123h</span>,<span class="hljs-number">0456h</span>,<span class="hljs-number">0789h</span>,<span class="hljs-number">0abch</span>,<span class="hljs-number">0123h</span>,<span class="hljs-number">0456h</span>,<span class="hljs-number">0789h</span>,<span class="hljs-number">0abch</span><br>	<span class="hljs-built_in">dw</span> <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>	//<span class="hljs-number">16</span>个字型数据，存放数据，当作栈使用<br><span class="hljs-symbol">start:</span>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">cs</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ss</span>,<span class="hljs-built_in">ax</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">sp</span>,<span class="hljs-number">30h</span>	//设置栈顶<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">8</span><br><span class="hljs-symbol">	s1:</span> <span class="hljs-keyword">push</span> <span class="hljs-built_in">cs</span>:[<span class="hljs-built_in">bx</span>]	//入栈<br>		<span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">2</span><br>		<span class="hljs-keyword">loop</span> s1<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">8</span><br><span class="hljs-symbol">	s2:</span> <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cs</span>:[<span class="hljs-built_in">bx</span>] 	//出栈<br>		<span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">2</span><br>		<span class="hljs-keyword">loop</span> s2<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00h</span><br>		<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>codesg ends<br>end start<br></code></pre></td></tr></table></figure>
+
+<p>依次将字单元入栈，在依次出栈</p>
+<h2 id="放入不同的段"><a href="#放入不同的段" class="headerlink" title="放入不同的段"></a>放入不同的段</h2><h3 id="定义多个段"><a href="#定义多个段" class="headerlink" title="定义多个段"></a>定义多个段</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code,<span class="hljs-built_in">ds</span>:data,<span class="hljs-built_in">ss</span>:stack<br><br>data sedment<br>	<span class="hljs-built_in">dw</span> <span class="hljs-number">0123h</span>,<span class="hljs-number">0456h</span>,<span class="hljs-number">0789h</span>,<span class="hljs-number">0abch</span><br>data ends<br><br>stack sedment<br>	<span class="hljs-built_in">dw</span> <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>stack ends<br><br>code sedment<br><span class="hljs-symbol">start:</span>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,stack<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ss</span>,<span class="hljs-built_in">ax</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">sp</span>,<span class="hljs-number">20h</span>	//设置栈顶指向stack<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,data<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>,<span class="hljs-built_in">ax</span>	//<span class="hljs-built_in">ds</span>指向data<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">8</span><br><span class="hljs-symbol">		</span><br><span class="hljs-symbol">	s1:</span> <span class="hljs-keyword">push</span> <span class="hljs-built_in">cs</span>:[<span class="hljs-built_in">bx</span>]	//入栈<br>		<span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">2</span><br>		<span class="hljs-keyword">loop</span> s1<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">8</span><br><span class="hljs-symbol">		</span><br><span class="hljs-symbol">	s2:</span> <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cs</span>:[<span class="hljs-built_in">bx</span>] 	//出栈<br>		<span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">2</span><br>		<span class="hljs-keyword">loop</span> s2<br>		<br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00h</span><br>		<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br><br>end start<br></code></pre></td></tr></table></figure>
+
+<p>通过assume，将cs与code相连，使cs指向code（其余同）</p>
+<h3 id="引用多个段"><a href="#引用多个段" class="headerlink" title="引用多个段"></a>引用多个段</h3><p>在程序中，段名（例如code）相当于一个标号，代表了段地址</p>
+<p>例如</p>
+<p>将data中的一个数据送入bx</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,data<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>,<span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-built_in">ds</span>:[<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+
+<h1 id="7-灵活的定位内存地址法"><a href="#7-灵活的定位内存地址法" class="headerlink" title="7.灵活的定位内存地址法"></a>7.灵活的定位内存地址法</h1><h3 id="and与or"><a href="#and与or" class="headerlink" title="and与or"></a>and与or</h3><p>and ：逻辑与</p>
+<p>or  ：逻辑或</p>
+<h3 id="字符形式的数据"><a href="#字符形式的数据" class="headerlink" title="字符形式的数据"></a>字符形式的数据</h3><p>以     ‘……’    的形式指明是字符型</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-built_in">db</span>		//define <span class="hljs-built_in">byte</span><br>//伪操作指令，定义单字节数据<br><br><span class="hljs-built_in">db</span> <span class="hljs-string">&#x27;un&#x27;</span><br>//相当于	<span class="hljs-built_in">db</span> <span class="hljs-number">75h</span>,<span class="hljs-number">6eh</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-string">&#x27;a&#x27;</span><br>//相当于	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">61h</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="大小写转换"><a href="#大小写转换" class="headerlink" title="大小写转换"></a>大小写转换</h3><p>在二进制下，大小写的差距仅在与第六位，大写是0，小写是1</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">A</span>	<span class="hljs-number">01000001</span>b	<span class="hljs-number">41</span>h<br><br><span class="hljs-attribute">a</span>	<span class="hljs-number">01100001</span>b	<span class="hljs-number">61</span>h<br></code></pre></td></tr></table></figure>
+
+<p>转大写，或；转小写，与</p>
+<h2 id="bx-idata"><a href="#bx-idata" class="headerlink" title="[bx+idata]"></a>[bx+idata]</h2><h3 id="描述-1"><a href="#描述-1" class="headerlink" title="描述"></a>描述</h3><p>在一个起始地址的基础上间接定位一个内存单元</p>
+<p>除[bx]外，[bx+idata]也可以表示一个内存单元</p>
+<p>偏移地址伪(bx)+idata</p>
+<p>例如（不同格式）</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>+<span class="hljs-number">200</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-number">200</span>+<span class="hljs-built_in">bx</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">200</span>[<span class="hljs-built_in">bx</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>].<span class="hljs-number">200</span><br><br>//	(<span class="hljs-built_in">ax</span>)=((<span class="hljs-built_in">ds</span>)*<span class="hljs-number">16</span>+(<span class="hljs-built_in">bx</span>)+<span class="hljs-number">200</span>)<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="处理数组"><a href="#处理数组" class="headerlink" title="处理数组"></a>处理数组</h3><p>例如    ：[bx+0]    与    [bx+5]</p>
+<p>使用一次    bx    就可以使用两个数组</p>
+<p>0    与    5    给出起始偏移地址；bx    给出从起始偏移地址开始的相对偏移地址</p>
+<h2 id="SI与DI"><a href="#SI与DI" class="headerlink" title="SI与DI"></a>SI与DI</h2><h3 id="描述-2"><a href="#描述-2" class="headerlink" title="描述"></a>描述</h3><p>si    与    di    是8086cpu    中与    bx    功能相近的寄存器</p>
+<p>但是无法分成两个8位寄存器</p>
+<h3 id="bx-si-与-bx-di"><a href="#bx-si-与-bx-di" class="headerlink" title="[bx+si]与[bx+di]"></a>[bx+si]与[bx+di]</h3><p>使用两个变量表示地址</p>
+<p>例如    [bx+si]（格式）</p>
+<p>偏移地址    (bx)+(si)</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>]<br>mox <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>][<span class="hljs-built_in">si</span>]<br></code></pre></td></tr></table></figure>
+
+
+
+<p>[bx+si+idata]    与    [bx+di+idata]</p>
+<p>使用两个变量与一个常量表示地址</p>
+<p>格式</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>+<span class="hljs-number">10</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>][<span class="hljs-built_in">si</span>].<span class="hljs-number">10</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,[<span class="hljs-built_in">bx</span>].<span class="hljs-number">10</span>[<span class="hljs-built_in">si</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">10</span>[<span class="hljs-built_in">bx</span>][<span class="hljs-built_in">si</span>]<br></code></pre></td></tr></table></figure>
+
+<h1 id="8-数据处理基本问题"><a href="#8-数据处理基本问题" class="headerlink" title="8.数据处理基本问题"></a>8.数据处理基本问题</h1><p>寄存器（reg）</p>
+<p>段寄存器（sreg）</p>
+<h2 id="两个基本的问题"><a href="#两个基本的问题" class="headerlink" title="两个基本的问题"></a>两个基本的问题</h2><p>数据的地址</p>
+<p>数据的长度</p>
+<h2 id="bx，si，di，bp"><a href="#bx，si，di，bp" class="headerlink" title="bx，si，di，bp"></a>bx，si，di，bp</h2><p>在8086中，只有这四个寄存器可以在    []    中进行寻址</p>
+<p>当    []    中出现    bp    ，且没有直接给出段地址，则段地址默认在    ss    中</p>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h3 id="处理的指令"><a href="#处理的指令" class="headerlink" title="处理的指令"></a>处理的指令</h3><p>读取，写入，运算</p>
+<h3 id="位置"><a href="#位置" class="headerlink" title="位置"></a>位置</h3><p>CPU内部，内存，端口</p>
+<h3 id="位置的表达"><a href="#位置的表达" class="headerlink" title="位置的表达"></a>位置的表达</h3><p>立即数（idata）    ：直接的数据</p>
+<p>寄存器    ：数据在寄存器中，使用寄存器名</p>
+<p>段地址(SA)与偏移地址(EA)    ：以    [X]    格式给出地址</p>
+<h3 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h3><p>直接寻址    //EA=idata；SA=(ds)；</p>
+<p>寄存器间接寻址    //EA=(bx)；SA=(ds)；</p>
+<p>寄存器相对寻址    //EA=(bx)+idata；SA=(ds)；</p>
+<p>基址变址寻址    //EA=(bx)+(si)；SA=(ds)；</p>
+<p>相对基址变址寻址    //EA=(bx)+(si)+idata；SA=(ds)；</p>
+<h3 id="长度"><a href="#长度" class="headerlink" title="长度"></a>长度</h3><p>1</p>
+<p>通过寄存器名指明数据长度</p>
+<p>2</p>
+<p>使用操作符    X ptr    指明内存单元长度</p>
+<p>（    X    可以是    word    或    byte    ）</p>
+<h2 id="div指令"><a href="#div指令" class="headerlink" title="div指令"></a>div指令</h2><p>除法指令</p>
+<p>除数：</p>
+<p>在8086中有两种：8位    与    16位</p>
+<p>在一个寄存器或内存单元中</p>
+<p>被除数：</p>
+<p>在8086中</p>
+<p>当除数是8位，默认在    ax    。</p>
+<p>当除数是16位，在    ax与dx    中；dx存放高位，ax存放低位。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">div</span> <span class="hljs-built_in">byte</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">ds</span>:[<span class="hljs-number">0</span>]<br>//	(<span class="hljs-built_in">al</span>)=(<span class="hljs-built_in">ax</span>)/((<span class="hljs-built_in">ds</span>)*<span class="hljs-number">16</span>+<span class="hljs-number">0</span>)的商<br>//	(<span class="hljs-number">ah</span>)=(<span class="hljs-built_in">ax</span>)/((<span class="hljs-built_in">ds</span>)*<span class="hljs-number">16</span>+<span class="hljs-number">0</span>)的余数<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="伪指令dd"><a href="#伪指令dd" class="headerlink" title="伪指令dd"></a>伪指令dd</h2><p>定义    dward</p>
+<p>double word    （双字）</p>
+<h2 id="操作符dup"><a href="#操作符dup" class="headerlink" title="操作符dup"></a>操作符dup</h2><p>进行数据的重复</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">db</span>(dw,dd)	重复次数	dup	(重复的数据)<br></code></pre></td></tr></table></figure>
+
+<p>例如</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">db <span class="hljs-number">3</span> dup(<span class="hljs-number">0</span>)	<span class="hljs-regexp">//</span>定义<span class="hljs-number">3</span>个字节，值全为<span class="hljs-number">0</span><br>db <span class="hljs-number">3</span> dup(<span class="hljs-string">&#x27;abc&#x27;</span>,<span class="hljs-string">&#x27;ABC&#x27;</span>)	<span class="hljs-regexp">//</span>定义<span class="hljs-number">18</span>个字节，为	<span class="hljs-string">&#x27;abcABCabcABCabcABC&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="9-指令转移原理"><a href="#9-指令转移原理" class="headerlink" title="9.指令转移原理"></a>9.指令转移原理</h1><h2 id="描述-3"><a href="#描述-3" class="headerlink" title="描述"></a>描述</h2><p>修改    IP    或者同时修改    CS    和    IP    的指令</p>
+<p>短转移：    -128~127</p>
+<p>近转移：    -32768~32767</p>
+<p>方便程序段在内存中的浮动</p>
+<p>当位移超界时，编译器报错</p>
+<h3 id="指令-1"><a href="#指令-1" class="headerlink" title="指令"></a>指令</h3><p>无条件转移指令（例如：jmp    ）</p>
+<p>条件转移指令</p>
+<p>循环指令（例如：loop    ）</p>
+<p>过程</p>
+<p>中断</p>
+<h3 id="段内转移"><a href="#段内转移" class="headerlink" title="段内转移"></a>段内转移</h3><p>​    //只修改    IP</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">ax</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="段间转移"><a href="#段间转移" class="headerlink" title="段间转移"></a>段间转移</h3><p>​    //同上修改    CS    和    IP</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">jmp</span> <span class="hljs-number">1000</span>:<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="操作符offset"><a href="#操作符offset" class="headerlink" title="操作符offset"></a>操作符offset</h2><p>取得标号的地址</p>
+<p>例如</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br>code <span class="hljs-meta">segment</span><br><span class="hljs-symbol">	start:</span><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,offset start		//<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">0</span><br><span class="hljs-symbol">		s:</span><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,offset s			//<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">3</span><br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+
+<h2 id="jmp"><a href="#jmp" class="headerlink" title="jmp"></a>jmp</h2><h3 id="需要的两种信息："><a href="#需要的两种信息：" class="headerlink" title="需要的两种信息："></a>需要的两种信息：</h3><p>转移的目的地址</p>
+<p>转移的距离</p>
+<h3 id="段内转移-1"><a href="#段内转移-1" class="headerlink" title="段内转移"></a>段内转移</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">jmp</span> short s<br>//	short	表示是短转移，	s	是目的地；转移使得	<span class="hljs-built_in">CS</span>:<span class="hljs-built_in">IP</span>	指向标号出处地址<br></code></pre></td></tr></table></figure>
+
+<p>机器指令中不包括转移目的地址，而是告诉了cpu要转移的位移</p>
+<h3 id="段间转移-1"><a href="#段间转移-1" class="headerlink" title="段间转移"></a>段间转移</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">far</span> <span class="hljs-built_in">ptr</span> 标号<br></code></pre></td></tr></table></figure>
+
+<p>ptr指明了标号的段地址与在段中得偏移地址</p>
+<h3 id="地址在寄存器中"><a href="#地址在寄存器中" class="headerlink" title="地址在寄存器中"></a>地址在寄存器中</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">jmp</span> <span class="hljs-number">16</span>位reg<br></code></pre></td></tr></table></figure>
+
+<p>IP=(16位reg)</p>
+<h3 id="地址在内存中"><a href="#地址在内存中" class="headerlink" title="地址在内存中"></a>地址在内存中</h3><h4 id="段内"><a href="#段内" class="headerlink" title="段内"></a>段内</h4><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> 内存单元地址<br></code></pre></td></tr></table></figure>
+
+<p>从内存单元（任意格式）开始的一个字存放着偏移地址</p>
+<h4 id="段间"><a href="#段间" class="headerlink" title="段间"></a>段间</h4><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> 内存单元地址<br></code></pre></td></tr></table></figure>
+
+<p>在内存单元开始的两个字，高地址存放段地址，低地址存放偏移地址</p>
+<p>(CS)=(内存单元地址+2)</p>
+<p>(IP)=(内存单元地址)</p>
+<h2 id="jcxz指令"><a href="#jcxz指令" class="headerlink" title="jcxz指令"></a>jcxz指令</h2><p>有条件转移指令，短转移</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">jcxz 标号		<span class="hljs-regexp">//</span>如果	(cx)=<span class="hljs-number">0</span>	,转移到标号<br></code></pre></td></tr></table></figure>
+
+<h2 id="loop指令"><a href="#loop指令" class="headerlink" title="loop指令"></a>loop指令</h2><p>短指令</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-keyword">loop</span> 标号<br></code></pre></td></tr></table></figure>
+
+<h1 id="10-ret和retf"><a href="#10-ret和retf" class="headerlink" title="10.ret和retf"></a>10.ret和retf</h1><h2 id="描述-4"><a href="#描述-4" class="headerlink" title="描述"></a>描述</h2><p>用法</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">ret</span><br><span class="hljs-keyword">retf</span><br></code></pre></td></tr></table></figure>
+
+<p>都是转移指令，都可以修改IP，或者同时修改CS和IP</p>
+<p>ret使用栈中数据，修改    IP    的内容，实现近转移</p>
+<p>retf使用栈中数据，修改        CS和IP    的内容，实现远转移</p>
+<h3 id="使用ret"><a href="#使用ret" class="headerlink" title="使用ret"></a>使用ret</h3><p>原理</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">(IP)</span>=<span class="hljs-comment">((SS)</span>*<span class="hljs-number">46</span>+<span class="hljs-comment">(sp)</span>)<br><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">+2</span><br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>pop IP</p>
+<h3 id="使用retf"><a href="#使用retf" class="headerlink" title="使用retf"></a>使用retf</h3><p>原理</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">(IP)</span>=<span class="hljs-comment">((SS)</span>*<span class="hljs-number">46</span>+<span class="hljs-comment">(sp)</span>)<br><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">+2</span><br><span class="hljs-comment">(CS)</span>=<span class="hljs-comment">((ss)</span>*<span class="hljs-number">16</span>+<span class="hljs-comment">(sp)</span>)<br><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">+2</span><br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>pop IP</p>
+<p>pop CS</p>
+<h2 id="call指令"><a href="#call指令" class="headerlink" title="call指令"></a>call指令</h2><h3 id="描述-5"><a href="#描述-5" class="headerlink" title="描述"></a>描述</h3><p>只能实现远转移</p>
+<p>当指向时：</p>
+<p>1.将当前的    IP    或    CS和IP压入栈</p>
+<p>2.转移</p>
+<h3 id="位移转移"><a href="#位移转移" class="headerlink" title="位移转移"></a>位移转移</h3><p>使用</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit"><span class="hljs-built_in">call</span> 标号<br></code></pre></td></tr></table></figure>
+
+<p>原理</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">+2</span><br><span class="hljs-comment">((ss)</span>*<span class="hljs-number">16</span>+<span class="hljs-comment">(sp)</span>)=<span class="hljs-comment">(IP)</span><br><span class="hljs-comment">(IP)</span>=<span class="hljs-comment">(IP)</span><span class="hljs-number">+16</span><br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>push IP</p>
+<p>jmp near ptr 标号</p>
+<h3 id="目的地址在指令中"><a href="#目的地址在指令中" class="headerlink" title="目的地址在指令中"></a>目的地址在指令中</h3><p>段间转移</p>
+<p>使用</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">call</span> <span class="hljs-built_in">far</span> <span class="hljs-built_in">ptr</span> 标号<br></code></pre></td></tr></table></figure>
+
+<p>原理</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">(SP)</span>=<span class="hljs-comment">(SP)</span><span class="hljs-number">+2</span><br><span class="hljs-comment">((ss)</span>*<span class="hljs-number">16</span>+<span class="hljs-comment">(sp)</span>)=<span class="hljs-comment">(CS)</span><br><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">-2</span><br><span class="hljs-comment">((ss)</span>*<span class="hljs-number">16</span>+<span class="hljs-comment">(sp)</span>)=<span class="hljs-comment">(IP)</span><br><br><span class="hljs-comment">(cs)</span>=标号段地址<br><span class="hljs-comment">(IP)</span>=所在段偏移地址<br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>push cs</p>
+<p>push ip</p>
+<p>jmp far ptr 标号</p>
+<h3 id="转移地址在寄存器中"><a href="#转移地址在寄存器中" class="headerlink" title="转移地址在寄存器中"></a>转移地址在寄存器中</h3><p>使用</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">call</span> <span class="hljs-number">16</span>位<span class="hljs-keyword">reg</span><br></code></pre></td></tr></table></figure>
+
+<p>原理</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">(sp)</span>=<span class="hljs-comment">(sp)</span><span class="hljs-number">-2</span><br><span class="hljs-comment">((ss)</span>*<span class="hljs-number">16</span>+<span class="hljs-comment">(sp)</span>)=<span class="hljs-comment">(IP)</span><br><br><span class="hljs-comment">(IP)</span>=<span class="hljs-comment">(16位reg)</span><br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>push ip</p>
+<p>jmp 16位reg</p>
+<h3 id="转移地址在内存中"><a href="#转移地址在内存中" class="headerlink" title="转移地址在内存中"></a>转移地址在内存中</h3><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><p>使用</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">call</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> 标号<br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>push ip</p>
+<p>jmp word ptr 标号</p>
+<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><p>使用</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">call</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> 标号<br></code></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<p>push cs</p>
+<p>push ip</p>
+<p>jmp dword ptr 标号</p>
+<h2 id="call与ret配合"><a href="#call与ret配合" class="headerlink" title="call与ret配合"></a>call与ret配合</h2><p>写一个有一定功能的程序段（子程序），在需要时，使用call指令执行，由于call指令会将call后面的指令地址存储与栈，在子程序后使用ret指令返回call后的代码继续执行</p>
+<p>框架</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br>cedo <span class="hljs-meta">segment</span><br><span class="hljs-symbol">	main:</span><br>		<span class="hljs-keyword">call</span> <span class="hljs-keyword">sub</span><br>		<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">4c00h</span><br>		<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><span class="hljs-symbol">	sub:</span><br>		<span class="hljs-keyword">call</span> sub1<br>		<span class="hljs-keyword">ret</span><br><span class="hljs-symbol">	sub2:</span><br>		<span class="hljs-keyword">ret</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h2 id="mul指令"><a href="#mul指令" class="headerlink" title="mul指令"></a>mul指令</h2><p>乘法指令</p>
+<p>两个数，位数要相同</p>
+<p>对8位（一个数默认在AL中，另一个在8</p>
+<p>位reg或内存单元中）</p>
+<p>：结果默认在    AX中；</p>
+<p>对16位（一个数默认在AX中，另一个在16</p>
+<p>位reg或内存单元中）</p>
+<p>：结果默认    高位在DX中，低位在AX中</p>
+<h2 id="批量数据传输"><a href="#批量数据传输" class="headerlink" title="批量数据传输"></a>批量数据传输</h2><p>寄存器数量是有限的，</p>
+<p>可以将批量数据存放在内存中，将内存空间的首地址放入寄存器</p>
+<h2 id="寄存器冲突"><a href="#寄存器冲突" class="headerlink" title="寄存器冲突"></a>寄存器冲突</h2><p>问题：子程序使用的寄存器，主程序中也可能用到</p>
+<p>解决：在子程序的开始将所有用到的寄存器中的内容保存，在子程序返回前恢复    可以使用栈来保存寄存器中的内容（入栈，出栈）</p>
+<p>（注意顺序）</p>
+<h1 id="11-标志寄存器"><a href="#11-标志寄存器" class="headerlink" title="11.标志寄存器"></a>11.标志寄存器</h1><h2 id="描述-6"><a href="#描述-6" class="headerlink" title="描述"></a>描述</h2><p>存储相关指令的某些执行结果</p>
+<p>为cpu执行相关指令提供依据</p>
+<p>控制cpu的相关工作方式</p>
+<p>——</p>
+<p>大多数运算指令影响标志寄存器</p>
+<p>大多数传送指令不影响标志寄存器</p>
+<p>——</p>
+<p>在8086cpu中，标志寄存器为16位</p>
+<h2 id="寄存器flag"><a href="#寄存器flag" class="headerlink" title="寄存器flag"></a>寄存器flag</h2><p>按位起作用，每一位都有专门的含义，记录特定信息</p>
+<p>对8086cpu</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">15</span>		<span class="hljs-number">14</span>		<span class="hljs-number">13</span>		<span class="hljs-number">12</span><br><span class="hljs-attribute">11</span>-OF	<span class="hljs-number">10</span>-DF	<span class="hljs-number">9</span>-IF	<span class="hljs-number">8</span>-TF	<br><span class="hljs-attribute">7</span>-SF	<span class="hljs-number">6</span>-ZF	<span class="hljs-number">5</span>		<span class="hljs-number">4</span>-AF<br><span class="hljs-attribute">3</span>		<span class="hljs-number">2</span>-PF	<span class="hljs-number">1</span>		<span class="hljs-number">0</span>-CF<br></code></pre></td></tr></table></figure>
+
+<h3 id="ZF"><a href="#ZF" class="headerlink" title="ZF"></a>ZF</h3><p>零位标志，记录指令执行结果是否为0</p>
+<p>为0：    zf=1</p>
+<p>不为0：    zf=0</p>
+<h3 id="PF"><a href="#PF" class="headerlink" title="PF"></a>PF</h3><p>奇偶标志位，记录指令执行结果所有    bit    位中    1    的个数</p>
+<p>个数为奇：    pf=0</p>
+<p>个数为偶：    pf=1</p>
+<h3 id="SF"><a href="#SF" class="headerlink" title="SF"></a>SF</h3><p>（仅对有符号数有意义）</p>
+<p>符号标志位，记录指令执行结果的正负</p>
+<p>正：    sf=0</p>
+<p>负：    sf=1</p>
+<h3 id="CF"><a href="#CF" class="headerlink" title="CF"></a>CF</h3><p>进位标志位，在进行无符号数运算时，记录运算结果    最高有效位向更高位的进位值（加法）    或    从更高位的借位值（减法）</p>
+<h3 id="OF"><a href="#OF" class="headerlink" title="OF"></a>OF</h3><p>溢出标志位，记录有符号数运算结果是否溢出</p>
+<p>溢出：    of=1</p>
+<p>没溢出：    of=0</p>
+<h3 id="DF"><a href="#DF" class="headerlink" title="DF"></a>DF</h3><p>方向标志位。</p>
+<h2 id="adc指令"><a href="#adc指令" class="headerlink" title="adc指令"></a>adc指令</h2><p>带进位加法指令，利用了    cf</p>
+<p>目的：进行低位相加后的    高位相加在加上低位产生的进位值</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm">例如<br><span class="hljs-keyword">adc</span> a,<span class="hljs-keyword">b</span><br><span class="hljs-comment">//	a=a+b+cf</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="sbb指令"><a href="#sbb指令" class="headerlink" title="sbb指令"></a>sbb指令</h2><p>带进=借位加法指令，利用了    cf</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">例如计算	<span class="hljs-number">003e1000h</span>-<span class="hljs-number">00202000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">003eh</span><br><span class="hljs-keyword">sub</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">2000h</span><br><span class="hljs-keyword">sbb</span> <span class="hljs-built_in">ax</span>,<span class="hljs-number">0020h</span><br>//	<span class="hljs-built_in">ax</span>=<span class="hljs-built_in">ax</span>-<span class="hljs-number">0020h</span>-cf<br></code></pre></td></tr></table></figure>
+
+<h2 id="cmp指令"><a href="#cmp指令" class="headerlink" title="cmp指令"></a>cmp指令</h2><p>比较指令，相当于不保存结果的减法指令</p>
+<p>通过影响标志寄存器表示比较结果</p>
+<p>影响： zf, sf, cf, of</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">例如<br>cmp <span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">b</span><br>//	进行	<span class="hljs-selector-tag">a</span>-<span class="hljs-selector-tag">b</span>	的运算，不保存结果<br></code></pre></td></tr></table></figure>
+
+<p>——</p>
+<p>当对无符号数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>	a=b 	zf=<span class="hljs-number">1</span><br><span class="hljs-regexp">//</span>	a&gt;b 	cf=<span class="hljs-number">0</span> and zf=<span class="hljs-number">0</span><br><span class="hljs-regexp">//</span>	a&lt;b 	cf=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>——</p>
+<p>对有符号数</p>
+<p>当不存在溢出，逻辑结果正负    等于    实际结果正负</p>
+<p>当存在溢出，逻辑结果正负    与    实际结果正负    相反</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">//	a&lt;b		sf<span class="hljs-operator">=</span><span class="hljs-number">1</span> and of<span class="hljs-operator">=</span><span class="hljs-number">0</span><br>//	a&gt;b		sf<span class="hljs-operator">=</span><span class="hljs-number">0</span> and of<span class="hljs-operator">=</span><span class="hljs-number">0</span><br><br>//	a&lt;b		sf<span class="hljs-operator">=</span><span class="hljs-number">0</span> and of<span class="hljs-operator">=</span><span class="hljs-number">1</span><br>//	a&gt;b		sf<span class="hljs-operator">=</span><span class="hljs-number">1</span> and of<span class="hljs-operator">=</span><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="检测比较结果的转移指令"><a href="#检测比较结果的转移指令" class="headerlink" title="检测比较结果的转移指令"></a>检测比较结果的转移指令</h2><p>大多数条件转移指令都通过检测标志寄存器的相关标志位的结果，来决定是否修改    ip</p>
+<p>对无符号数：    检测    zf，cf</p>
+<p>对有符号数：    检测    sf，of，zf</p>
+<p><img src="https://cdn.staticaly.com/gh/lengkc/image@master/bj/2023-02-09-221712.3t0v6kpep4y0.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="df标志与串传送指令"><a href="#df标志与串传送指令" class="headerlink" title="df标志与串传送指令"></a>df标志与串传送指令</h2><p>df控制每次操作后    si，di    的递减</p>
+<p>df=0    每次操作后递增</p>
+<p>df=1    每次操作后递减</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">movsb</span><br>先将	<span class="hljs-built_in">ds</span>:<span class="hljs-built_in">si</span>	指向的内存单元中的字节送入	<span class="hljs-built_in">es</span>:<span class="hljs-built_in">di</span><br>后根据	df	的值，将	<span class="hljs-built_in">si</span>与<span class="hljs-built_in">di</span>	递增或递减<br>_<br>((<span class="hljs-built_in">es</span>)*<span class="hljs-number">16</span>+(<span class="hljs-built_in">si</span>))=((<span class="hljs-built_in">ds</span>)*<span class="hljs-number">16</span>+(<span class="hljs-built_in">si</span>))<br>如果 df=<span class="hljs-number">0</span><br>		(<span class="hljs-built_in">si</span>)=(<span class="hljs-built_in">si</span>)+<span class="hljs-number">1</span><br>		(<span class="hljs-built_in">di</span>)=(<span class="hljs-built_in">di</span>)+<span class="hljs-number">1</span><br>如果 df=<span class="hljs-number">1</span><br>		(<span class="hljs-built_in">si</span>)=(<span class="hljs-built_in">si</span>)-<span class="hljs-number">1</span><br>		(<span class="hljs-built_in">di</span>)=(<span class="hljs-built_in">di</span>)-<span class="hljs-number">1</span><br>_<br><span class="hljs-keyword">movsw</span><br>先将	<span class="hljs-built_in">ds</span>:<span class="hljs-built_in">si</span>	指向的内存单元中的字节送入	<span class="hljs-built_in">es</span>:<span class="hljs-built_in">di</span><br>后根据	df	的值，将	<span class="hljs-built_in">si</span>与<span class="hljs-built_in">di</span>	递增<span class="hljs-number">2</span>或递减<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p>movsb    与    movsw    都可与    rep    配合使用</p>
+<h2 id="pushf和popf"><a href="#pushf和popf" class="headerlink" title="pushf和popf"></a>pushf和popf</h2><p>pushf</p>
+<p>将标志寄存器的值压栈</p>
+<p>popf</p>
+<p>从栈中弹出数据，送入标志寄存器</p>
+<h2 id="标志寄存器debug"><a href="#标志寄存器debug" class="headerlink" title="标志寄存器debug"></a>标志寄存器debug</h2><p>在    debug    中，标志寄存器按照有意义的各个标志单独表示</p>
+<h1 id="12-内中断"><a href="#12-内中断" class="headerlink" title="12.内中断"></a>12.内中断</h1><h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><h3 id="描述-7"><a href="#描述-7" class="headerlink" title="描述"></a>描述</h3><p>当cpu执行完当前指令，检测到cpu外部或者内部产生的特殊信息（中断信息），可以立即对信息进行处理。</p>
+<p>中断：cpu不接着向下执行，而是处理特殊信息</p>
+<h3 id="让一段程序为N号中断的处理程序"><a href="#让一段程序为N号中断的处理程序" class="headerlink" title="让一段程序为N号中断的处理程序"></a>让一段程序为N号中断的处理程序</h3><p>将它的入口地址放入中断向量表的N号表项</p>
+<p>即安装程序</p>
+<h2 id="内中断产生"><a href="#内中断产生" class="headerlink" title="内中断产生"></a>内中断产生</h2><h3 id="中断判断码"><a href="#中断判断码" class="headerlink" title="中断判断码"></a>中断判断码</h3><p>字节型数据</p>
+<p>标识中断信息的来源</p>
+<h3 id="产生"><a href="#产生" class="headerlink" title="产生"></a>产生</h3><p>除法错误，div指令时产生的溢出                       中断码-0</p>
+<p>单步执行                                                               中断码-1</p>
+<p>执行into                                                                中断码-4</p>
+<p>执行int（格式    int n    ）(n为字节型立即数)    中断码-n</p>
+<h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><h3 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h3><p>要根据中断信息确定处理程序的入口，从而设置CS和IP</p>
+<h3 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h3><p>在内存中保存</p>
+<p>中断向量（中断程序的入口地址）的列表</p>
+<p>——</p>
+<p>在知道中断类型码后，将其作为中断向量表的表项号，以此得到入口地址</p>
+<p>——</p>
+<p>对于寻找中断向量表，其存放在固定的内存地址</p>
+<p>例如，对于8086</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-number">0000</span><span class="hljs-string">:0000</span>	<span class="hljs-string">到</span>	<span class="hljs-number">0000</span><span class="hljs-string">:03ff</span>	<span class="hljs-string">的1024个单元固定存放中断向量表</span><br><span class="hljs-string">一个表项占据2个字，高地址存放段地址，低地址存放偏移地址</span><br></code></pre></td></tr></table></figure>
+
+<p>不过系统要处理的中断事件远不足256个，有许多单元是空的</p>
+<p>一般从    0000:0200    到    0000：03ff    是空的</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="中断过程"><a href="#中断过程" class="headerlink" title="中断过程"></a>中断过程</h3><p>cpu使用中断码找到中    向量，并设置CS和IP</p>
+<p>（在设置前先将原来的CS和IP保存，各个标志寄存器的值同样需要保存）</p>
+<p>//在执行完后要恢复cpu状态</p>
+<h3 id="处理-1"><a href="#处理-1" class="headerlink" title="处理"></a>处理</h3><p>cpu收到中断信息后，引发中断过程，随后执行中断程序</p>
+<p>执行完中断程序后，返回原执行点继续</p>
+<h2 id="中断处理程序与iret指令"><a href="#中断处理程序与iret指令" class="headerlink" title="中断处理程序与iret指令"></a>中断处理程序与iret指令</h2><h3 id="处理程序"><a href="#处理程序" class="headerlink" title="处理程序"></a>处理程序</h3><p>保存用到的寄存器</p>
+<p>处理中断</p>
+<p>恢复寄存器</p>
+<p>使用iret返回</p>
+<h3 id="iret"><a href="#iret" class="headerlink" title="iret"></a>iret</h3><p>功能的汇编描述：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">pop</span> <span class="hljs-built_in">ip</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">cs</span><br><span class="hljs-keyword">popf</span><br></code></pre></td></tr></table></figure>
+
+<p>出栈顺序与中断过程中入栈顺序相对应</p>
+<p>通常与自动的中断过程配合使用</p>
+<h2 id="编写中断程序的安装"><a href="#编写中断程序的安装" class="headerlink" title="编写中断程序的安装"></a>编写中断程序的安装</h2><p>代码长度的计算</p>
+<p>例如对do0</p>
+<p>长度为offest do0end - offest do0</p>
+<p>程序所有内容都应放置于不会被覆盖的空间，以免被其他内容覆盖</p>
+<h2 id="单步中断"><a href="#单步中断" class="headerlink" title="单步中断"></a>单步中断</h2><p>（同样有多条指令组成）</p>
+<p>（为单步跟踪程序的执行过程，提供了实现机制）</p>
+<p>cpu在执行完一条指令后，如果检测到标志寄存器TF位为    1    ，会产生单步中断</p>
+<p>debug的t命令便是通过将    TF    设置为1，使得cpu在处理完该条指令后引发单步中断，来在屏幕显示寄存器的内容并且等待命令</p>
+<p>当    TF=1    ，cpu将陷入执行单步中断第一条指令的循环</p>
+<p>我们在cpu执行程序前将    TF    设置为    0    ，以避免这种</p>
+<h2 id="响应中断的特殊情况"><a href="#响应中断的特殊情况" class="headerlink" title="响应中断的特殊情况"></a>响应中断的特殊情况</h2><p>在cpu冒然的响应中断会导致错误的情况下，cpu不会响应中断</p>
+<p>对于有这种关系的指令，我们务必将它们连续执行</p>
+<h1 id="13-int"><a href="#13-int" class="headerlink" title="13.int"></a>13.int</h1><p>格式</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs excel"><span class="hljs-built_in">int</span> <span class="hljs-built_in">n</span><br>//<span class="hljs-built_in">n</span>为中断类型码<br></code></pre></td></tr></table></figure>
+
+<p>相当于引发一个    n    号1中断的中断过程</p>
+<h1 id="14-端口"><a href="#14-端口" class="headerlink" title="14.端口"></a>14.端口</h1><h2 id="逻辑位移指令"><a href="#逻辑位移指令" class="headerlink" title="逻辑位移指令"></a>逻辑位移指令</h2><h3 id="shl"><a href="#shl" class="headerlink" title="shl"></a>shl</h3><p>逻辑左移指令（左移一位相当于乘    2    ）</p>
+<p>当移动位数大于    1    时，移动位数要放在 cl 中</p>
+<p>——</p>
+<p>1.将一个寄存器或内存单元中的数据向左位移</p>
+<p>2.将最后移出的一位写入    CF    中</p>
+<p>3.最低为用    0    补充</p>
+<p>——</p>
+<p>例如：对    01001000b</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">01001000b</span><br><span class="hljs-keyword">shl</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>//执行后</p>
+<p>(al)=10010000b</p>
+<p>CF=0</p>
+<h3 id="shr"><a href="#shr" class="headerlink" title="shr"></a>shr</h3><p>逻辑右移指令（右移一位相当于除    2    ）</p>
+<p>当移动位数大于    1    时，移动位数要放在 cl 中</p>
+<p>——</p>
+<p>1.将一个寄存器或内存单元中的数据向右位移</p>
+<p>2.将最后移出的一位写入    CF    中</p>
+<p>3.最高为用    0    补充</p>
+<p>——</p>
+<p>例如：对    10000001b</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">10000001b</span><br><span class="hljs-keyword">shl</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>//执行后</p>
+<p>(al)=01000000b</p>
+<p>CF=1</p>
+<h1 id="15-外中断"><a href="#15-外中断" class="headerlink" title="15.外中断"></a>15.外中断</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B1%87%E7%BC%96/" class="print-no-link">#汇编</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/09/setcontext+orw/" title="setcontext+orw">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">setcontext+orw</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/08/pwn%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="从0到1,搭建pwn机">
+                        <span class="hidden-mobile">从0到1,搭建pwn机</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
