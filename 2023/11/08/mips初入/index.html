@@ -1,0 +1,1059 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="mips介绍MIPS32的架构是一种基于固定长度的定期编码指令集，并采用导入&#x2F;存储（load&#x2F;store)数据模型。经改进，这种架构可支持高级语言的优化执行。在路由器中，经常使用的一种MIPS架构就是MIPS32。 寄存器在MIPS体系结构中有32个通用寄存器，在汇编程序中可以用编号$0~$31表示，也可以用寄存器的名字表示，如$sp、$t1、$ta等 堆栈是从内存的高地址方向向低地址方向增长的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mips初入">
+<meta property="og:url" content="http://lekclc.github.io/2023/11/08/mips%E5%88%9D%E5%85%A5/index.html">
+<meta property="og:site_name" content="ymixz">
+<meta property="og:description" content="mips介绍MIPS32的架构是一种基于固定长度的定期编码指令集，并采用导入&#x2F;存储（load&#x2F;store)数据模型。经改进，这种架构可支持高级语言的优化执行。在路由器中，经常使用的一种MIPS架构就是MIPS32。 寄存器在MIPS体系结构中有32个通用寄存器，在汇编程序中可以用编号$0~$31表示，也可以用寄存器的名字表示，如$sp、$t1、$ta等 堆栈是从内存的高地址方向向低地址方向增长的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-08T09:15:54.000Z">
+<meta property="article:modified_time" content="2023-11-08T13:54:38.142Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="mips">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>mips初入 - ymixz</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lekclc.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ymixz</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mips初入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-08 17:15" pubdate>
+          2023年11月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mips初入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="mips介绍"><a href="#mips介绍" class="headerlink" title="mips介绍"></a>mips介绍</h1><p>MIPS32的架构是一种基于固定长度的定期编码指令集，并采用导入/存储（load/store)数据模型。经改进，这种架构可支持高级语言的优化执行。在路由器中，经常使用的一种MIPS架构就是MIPS32。</p>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>在MIPS体系结构中有32个通用寄存器，在汇编程序中可以用编号$0~$31表示，也可以用寄存器的名字表示，如$sp、$t1、$ta等</p>
+<p>堆栈是从内存的高地址方向向低地址方向增长的。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>寄存器名称</th>
+<th>寄存器描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>zero</td>
+<td>第0号寄存器，其值始终为0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>$at</td>
+<td>保留寄存器</td>
+</tr>
+<tr>
+<td>2～3</td>
+<td>$v0~v1</td>
+<td>values, 保存表达式或函数返回结果</td>
+</tr>
+<tr>
+<td>4-7</td>
+<td>$a0~a3</td>
+<td>aruments, 作为函数的前4个参数</td>
+</tr>
+<tr>
+<td>8～15</td>
+<td>$t0~$t7</td>
+<td>temporaries，供汇编程序使用的临时寄存器</td>
+</tr>
+<tr>
+<td>16～23</td>
+<td>$s0~$s7</td>
+<td>saved values，子函数使用时需要先保存原寄存器的值</td>
+</tr>
+<tr>
+<td>24～25</td>
+<td>$t8~t9</td>
+<td>temporaries, 供汇编程序的临时寄存器，补充$t0~t7</td>
+</tr>
+<tr>
+<td>26~27</td>
+<td>$k0~$k1</td>
+<td>保留，中断处理函数使用</td>
+</tr>
+<tr>
+<td>28</td>
+<td>$gp</td>
+<td>global pointer，全局指针</td>
+</tr>
+<tr>
+<td>29</td>
+<td>$sp</td>
+<td>stack pointer, 堆栈指针，指向堆栈的栈顶</td>
+</tr>
+<tr>
+<td>30</td>
+<td>$fp</td>
+<td>frame pointer, 保存栈指针</td>
+</tr>
+<tr>
+<td>31</td>
+<td>$ra</td>
+<td>return address, 返回地址</td>
+</tr>
+</tbody></table>
+<p>$0：即$zero，该寄存器总是返回0，为0这个有用常数提供了一个简洁的编码形式。在MIPS处理器的通用寄存器中，没有任何帮助运算判断的标志寄存器，要实现相应的功能时，都是通过测试两个寄存器是否相等完成的。MIPS编译器常常会使用slt、beq、bne等指令和由寄存器$0获得0值产生比较所有的比较条件，如相等、不等、小于等于、大于、大于等于。还可以用add指令创建move伪指令，如”move $t0, $t1; $t0=$t1”实际为“add $t0,$0,$t1; $t0= $t1 + 0”。使用MIPS伪指令可以简化任务。<br>$1 ($at) : 该寄存器为汇编保留，用做汇编器的暂时变量。<br>$2<del>$3($v0</del>$v1): 用于存放子程序的返回值或非浮点结果。当这两个寄存器不够存放返回值时，编译器通过内存来完成。<br>$4<del>$7($a0</del>$a3)：用于将前4个参数传递给子程序，不够的用堆栈处理。$a0<del>$a3、$v0</del>$v1和$ra 一起完成子程序函数调用过程，分别用以传递参数、返回结果和存放返回地址。当需要使用更多的寄存器时就需要堆栈了。MIPS编译器总是为参数在堆栈中留有空间，以防有参数需要存储。<br>$8<del>$15($t0</del>$t7): 一个子函数可以不用保存并随意使用这些寄存器。在进行表达式计算时，这些寄存器是非常好的临时变量。在使用时需要注意，当调用一个子函数时，这些寄存器的值有可能被子函数破坏。<br>$16<del>$23($s0</del>$s7): 子函数必须保证当函数返回时这些寄存器的内容将恢复到函数调用以前的值，或者子函数里不使用这些寄存器或把它们保存在堆栈上并保存在函数退出时恢复。这种约定使这些寄存器非常适合作为寄存器变量，或者用于存放一些函数调用期间必须保存的原值。<br>$24<del>$25($t8</del>$t9): 同$t0<del>$t7,作为$t0</del>$t7寄存器补充。<br>$26<del>$27($k0</del>$k1): 通常被中断或异常处理程序使用，以保存一些系统参数。<br>$28($gp): C语言中有两种存储类型，分别是自动型和静态型。自动变量是一个函数中的局部变量。静态变量在进入和退出一个函数时都是存在的。为了简化静态数据的访问，MIPS保留了一个寄存器作为全局指针gp在编译时，数据需要在以gp为基指针的64KB范围内。<br>$29($sp): MIPS硬件并不直接支持堆栈，X86有单独的PUSH和POP指令，而MIPS没有单独的栈操作指令，所有对栈的操作都是统一的内存访问方式，单这并非不影响MIPS使用堆栈。在发生函数调用时，调用者把函数调用之后要用的寄存器压入堆栈，被调用者把返回地址寄存器$ra（并非任何时候都保存$ra)和保留寄存器压入堆栈。同时，调整堆栈指针，并在返回时从堆栈中恢复寄存器。<br>$30($fp): 不同编译器可能对该寄存器使用方法不同。GNU MIPS C编译器使用了栈指针(Frame Pointer)。SGI的C编译器则没有使用栈指针，只是把这个寄存器当成保存寄存器使用（$s8)，这虽然节省了调用和返回开销，但增加了代码生成的复杂度性。<br>$31 ($ra): 存放返回地址。MIPS有一个jar（jump-and-link,跳转并链接）指令，在跳转到某个地址时可把下一条指令的地址放到$ra中，用于支持子程序。例如，调用程序把参数放到$a0<del>$a3中，“jar X”指令跳到X过程，被调用时需要保存的寄存器为$a0</del>$a3、$s0~$s7、$gp、$sp、$fp、$ra。</p>
+<h3 id="特殊寄存器"><a href="#特殊寄存器" class="headerlink" title="特殊寄存器"></a>特殊寄存器</h3><p>　　MIPS32架构中定义了3个特殊寄存器。分别为PC（程序计数器）、HI(乘除结果高位寄存器）和LO(乘除结果低位寄存器）。在进行乘法运算时，HI和LO保存乘法的运算结果，其中HI存储高32位，LO存储低32位；而在进行除法运算时，HI保存余数，LO存储商。</p>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>应用实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LB</td>
+<td>从存储器中读取一个字节的数据到寄存器中</td>
+<td>LB R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LH</td>
+<td>从存储器中读取半个字的数据到寄存器中</td>
+<td>LH R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LW</td>
+<td>从存储器中读取一个字的数据到寄存器中</td>
+<td>LW R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LD</td>
+<td>从存储器中读取双字的数据到寄存器中</td>
+<td>LD R1, 0(R2)</td>
+</tr>
+<tr>
+<td>L.S</td>
+<td>从存储器中读取单精度浮点数到寄存器中</td>
+<td>L.S R1, 0(R2)</td>
+</tr>
+<tr>
+<td>L.D</td>
+<td>从存储器中读取双精度浮点数到寄存器中</td>
+<td>L.D R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LBU</td>
+<td>功能与LB指令相同，但读出的是不带符号的数据</td>
+<td>LBU R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LHU</td>
+<td>功能与LH指令相同，但读出的是不带符号的数据</td>
+<td>LHU R1, 0(R2)</td>
+</tr>
+<tr>
+<td>LWU</td>
+<td>功能与LW指令相同，但读出的是不带符号的数据</td>
+<td>LWU R1, 0(R2)</td>
+</tr>
+<tr>
+<td>SB</td>
+<td>把一个字节的数据从寄存器存储到存储器中</td>
+<td>SB R1, 0(R2)</td>
+</tr>
+<tr>
+<td>SH</td>
+<td>把半个字节的数据从寄存器存储到存储器中</td>
+<td>SH R1，0(R2)</td>
+</tr>
+<tr>
+<td>SW</td>
+<td>把一个字的数据从寄存器存储到存储器中</td>
+<td>SW R1, 0(R2)</td>
+</tr>
+<tr>
+<td>SD</td>
+<td>把两个字节的数据从寄存器存储到存储器中</td>
+<td>SD R1, 0(R2)</td>
+</tr>
+<tr>
+<td>S.S</td>
+<td>把单精度浮点数从寄存器存储到存储器中</td>
+<td>S.S R1, 0(R2)</td>
+</tr>
+<tr>
+<td>S.D</td>
+<td>把双精度数据从存储器存储到存储器中</td>
+<td>S.D R1, 0(R2)</td>
+</tr>
+<tr>
+<td>DADD</td>
+<td>把两个定点寄存器的内容相加，也就是定点加</td>
+<td>DADD R1,R2,R3</td>
+</tr>
+<tr>
+<td>DADDI</td>
+<td>把一个寄存器的内容加上一个立即数</td>
+<td>DADDI R1,R2,#3</td>
+</tr>
+<tr>
+<td>DADDU</td>
+<td>不带符号的加</td>
+<td>DADDU R1,R2,R3</td>
+</tr>
+<tr>
+<td>DADDIU</td>
+<td>把一个寄存器的内容加上一个无符号的立即数</td>
+<td>DADDIU R1,R2,#3</td>
+</tr>
+<tr>
+<td>ADD.S</td>
+<td>把一个单精度浮点数加上一个双精度浮点数，结果是单精度浮点数</td>
+<td>ADD.S F0,F1,F2</td>
+</tr>
+<tr>
+<td>ADD.D</td>
+<td>把一个双精度浮点数加上一个单精度浮点数，结果是双精度浮点数</td>
+<td>ADD.D F0,F1,F2</td>
+</tr>
+<tr>
+<td>ADD.PS</td>
+<td>两个单精度浮点数相加，结果是单精度浮点数</td>
+<td>ADD.PS F0,F1,F2</td>
+</tr>
+<tr>
+<td>DSUB</td>
+<td>两个寄存器的内容相减，也就是定点数的减</td>
+<td>DSUB R1,R2,R3</td>
+</tr>
+<tr>
+<td>DSUBU</td>
+<td>不带符号的减</td>
+<td>DSUBU R1,R2,R3</td>
+</tr>
+<tr>
+<td>SUB.S</td>
+<td>一个双精度浮点数减去一个单精度浮点数，结果为单精度</td>
+<td>SUB.S F1,F2,F3</td>
+</tr>
+<tr>
+<td>SUB.D</td>
+<td>一个双精度浮点数减去一个单精度浮点数，结果为双精度浮点数</td>
+<td>SUB.D F1,F2,F3</td>
+</tr>
+<tr>
+<td>SUB.PS</td>
+<td>两个单精度浮点数相减</td>
+<td>SUB.SP F1,F2,F3</td>
+</tr>
+<tr>
+<td>DDIV</td>
+<td>两个定点寄存器的内容相除，也就是定点除</td>
+<td>DDIV Ｒ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>DDIVU</td>
+<td>不带符号的除法运算</td>
+<td>DDIVU Ｒ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>DIV.S</td>
+<td>一个双精度浮点数除以一个单精度浮点数，结果为单精度浮点数</td>
+<td>DIV.S F1,F2,F3</td>
+</tr>
+<tr>
+<td>DIV.D</td>
+<td>一个双精度浮点数除以一个单精度浮点数，结果为双精度浮点数</td>
+<td>DIV.D F1,F2,F3</td>
+</tr>
+<tr>
+<td>DIV.PS</td>
+<td>两个单精度浮点数相除，结果为单精度</td>
+<td>DIV.PS F1,F2,F3</td>
+</tr>
+<tr>
+<td>DMUL</td>
+<td>两个定点寄存器的内容相乘，也就是定点乘</td>
+<td>DMUL Ｒ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>DMULU</td>
+<td>不带符号的乘法运算</td>
+<td>DMULU R1,R2,R3</td>
+</tr>
+<tr>
+<td>MUL.S</td>
+<td>一个双精度浮点数乘以一个单精度浮点数，结果为单精度浮点数</td>
+<td>DMUL.S F1,F2,F3</td>
+</tr>
+<tr>
+<td>MUL.D</td>
+<td>一个双精度浮点数乘以一个单精度浮点数，结果为双精度浮点数</td>
+<td>DMUL.D F1,F2,F3</td>
+</tr>
+<tr>
+<td>MUL.PS</td>
+<td>两个单精度浮点数相乘，结果为单精度浮点数</td>
+<td>DMUL.PS F1,F2,F3</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>与运算，两个寄存器中的内容相与</td>
+<td>ANDＲ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>ANDI</td>
+<td>一个寄存器中的内容与一个立即数相与</td>
+<td>ANDIＲ1,Ｒ2,#3</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>或运算，两个寄存器中的内容相或</td>
+<td>ORＲ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>ORI</td>
+<td>一个寄存器中的内容与一个立即数相或</td>
+<td>ORIＲ1,Ｒ2,#3</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>异或运算，两个寄存器中的内容相异或</td>
+<td>XORＲ1,Ｒ2,Ｒ3</td>
+</tr>
+<tr>
+<td>XORI</td>
+<td>一个寄存器中的内容与一个立即数异或</td>
+<td>XORIＲ1,Ｒ2,#3</td>
+</tr>
+<tr>
+<td>BEQZ</td>
+<td>条件转移指令，当寄存器中内容为0时转移发生</td>
+<td>BEQZ R1,0</td>
+</tr>
+<tr>
+<td>BENZ</td>
+<td>条件转移指令，当寄存器中内容不为0时转移发生</td>
+<td>BNEZ R1,0</td>
+</tr>
+<tr>
+<td>BEQ</td>
+<td>条件转移指令，当两个寄存器内容相等时转移发生</td>
+<td>BEQ R1,R2</td>
+</tr>
+<tr>
+<td>BNE</td>
+<td>条件转移指令，当两个寄存器中内容不等时转移发生</td>
+<td>BNE R1,R2</td>
+</tr>
+<tr>
+<td>J</td>
+<td>直接跳转指令，跳转的地址在指令中</td>
+<td>J name</td>
+</tr>
+<tr>
+<td>JR</td>
+<td>使用寄存器的跳转指令，跳转地址在寄存器中</td>
+<td>JR R1</td>
+</tr>
+<tr>
+<td>JAL</td>
+<td>直接跳转指令，并带有链接功能，指令的跳转地址在指令中，跳转发生时要把返回地址存放到R31这个寄存器中</td>
+<td>JAL R1 name</td>
+</tr>
+<tr>
+<td>JALR</td>
+<td>使用寄存器的跳转指令，并且带有链接功能，指令的跳转地址在寄存器中，跳转发生时指令的放回地址放在R31这个寄存器中</td>
+<td>JALR R1</td>
+</tr>
+<tr>
+<td>MOV.S</td>
+<td>把一个单精度浮点数从一个浮点寄存器复制到另一个浮点寄存器</td>
+<td>MOV.S F0,F1</td>
+</tr>
+<tr>
+<td>MOV.D</td>
+<td>把一个双精度浮点数从一个浮点寄存器复制到另一个浮点寄存器</td>
+<td>MOV.D F0,F1</td>
+</tr>
+<tr>
+<td>MFC0</td>
+<td>把一个数据从通用寄存器复制到特殊寄存器</td>
+<td>MFC0 R1,R2</td>
+</tr>
+<tr>
+<td>MTC0</td>
+<td>把一个数据从特殊寄存器复制到通用寄存器</td>
+<td>MTC0 R1,R2</td>
+</tr>
+<tr>
+<td>MFC1</td>
+<td>把一个数据从定点寄存器复制到浮点寄存器</td>
+<td>MFC1 R1,F1</td>
+</tr>
+<tr>
+<td>MTC1</td>
+<td>把一个数据从浮点寄存器复制到定点寄存器</td>
+<td>MTC1 R1,F1</td>
+</tr>
+<tr>
+<td>LUI</td>
+<td>把一个16位的立即数填入到寄存器的高16位，低16位补零</td>
+<td>LUI R1,#42</td>
+</tr>
+<tr>
+<td>DSLL</td>
+<td>双字逻辑左移</td>
+<td>DSLL R1,R2,#2</td>
+</tr>
+<tr>
+<td>DSRL</td>
+<td>双字逻辑右移</td>
+<td>DSRL R1,R2,#2</td>
+</tr>
+<tr>
+<td>DSRA</td>
+<td>双字算术右移</td>
+<td>DSRA R1,R2,#2</td>
+</tr>
+<tr>
+<td>DSLLV</td>
+<td>可变的双字逻辑左移</td>
+<td>DSLLV R1,R2,#2</td>
+</tr>
+<tr>
+<td>DSRLV</td>
+<td>可变的双字罗伊右移</td>
+<td>DSRLV R1,R2,#2</td>
+</tr>
+<tr>
+<td>DSRAV</td>
+<td>可变的双字算术右移</td>
+<td>DSRAV R1,R2,#2</td>
+</tr>
+<tr>
+<td>SLT</td>
+<td>如果R2的值小于R3，那么设置R1的值为1，否则设置R1的值为0</td>
+<td>SLT R1,R2,R3</td>
+</tr>
+<tr>
+<td>SLTI</td>
+<td>如果寄存器R2的值小于立即数，那么设置R1的值为1，否则设置寄存器R1的值为0</td>
+<td>SLTI R1,R2,#23</td>
+</tr>
+<tr>
+<td>SLTU</td>
+<td>功能与SLT一致，但是带符号的</td>
+<td>SLTU R1,R2,R3</td>
+</tr>
+<tr>
+<td>SLTUI</td>
+<td>功能与SLT一致，但不带符号</td>
+<td>SLTUI R1,R2,R3</td>
+</tr>
+<tr>
+<td>MOVN</td>
+<td>如果第三个寄存器的内容为负，那么复制一个寄存器的内容到另外一个寄存器</td>
+<td>MOVN R1,R2,R3</td>
+</tr>
+<tr>
+<td>MOVZ</td>
+<td>如果第三个寄存器的内容为0，那么复制一个寄存器的内容到另外一个寄存器</td>
+<td>MOVZ R1,R2,R3</td>
+</tr>
+<tr>
+<td>TRAP</td>
+<td>根据地址向量转入管态</td>
+<td></td>
+</tr>
+<tr>
+<td>ERET</td>
+<td>从异常中返回到用户态</td>
+<td></td>
+</tr>
+<tr>
+<td>MADD.S</td>
+<td>一个双精度浮点数与单精度浮点数相乘加，结果为单精度</td>
+<td></td>
+</tr>
+<tr>
+<td>MADD.D</td>
+<td>一个双精度浮点数与单精度浮点数相乘加，结果为双精度</td>
+<td></td>
+</tr>
+<tr>
+<td>MADD.PS</td>
+<td>两个单精度浮点数相乘加，结果为单精度</td>
+<td></td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/pwn/" class="category-chain-item">pwn</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/pwn/" class="print-no-link">#pwn</a>
+      
+        <a href="/tags/mips/" class="print-no-link">#mips</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/17/how2heap_2.35/" title="how2heap_2.35">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">how2heap_2.35</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/05/arm%E5%88%9D%E5%85%A5/" title="arm初入">
+                        <span class="hidden-mobile">arm初入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
