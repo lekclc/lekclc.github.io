@@ -23,8 +23,8 @@
 <meta property="og:site_name" content="ymixz">
 <meta property="og:description" content="第一个LLVM PASSLLVM PASS12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061&#x2F;&#x2F; Hello.cpp#include &quot;llvm&#x2F;Pass.h&quot;#include &quot;llvm&#x2F;IR">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240716232504733.png">
-<meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240716232841397.png">
+<meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/3bab3f2b54be3455d43596cc8b626597.png">
+<meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/5c6db733af49267642c2a951e582d2a1.png">
 <meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/8498f645fef729be9d17bd1c29600aca.png">
 <meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/799776a363304d42848dd783251c3a9e.png">
 <meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/4fba2e6ee3513536c1223cfd4999514d.png">
@@ -39,12 +39,12 @@
 <meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/36be2987e129d68eb308d2fd234e6444.png">
 <meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/817bd4302a956b96d230b9c42823de23.png">
 <meta property="article:published_time" content="2024-07-16T17:55:17.000Z">
-<meta property="article:modified_time" content="2024-08-16T07:39:35.382Z">
+<meta property="article:modified_time" content="2024-08-16T07:43:42.081Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="llvm">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240716232504733.png">
+<meta name="twitter:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/3bab3f2b54be3455d43596cc8b626597.png">
   
   
   
@@ -332,9 +332,9 @@
 
 <h1 id="逆向-so"><a href="#逆向-so" class="headerlink" title="逆向.so"></a>逆向.so</h1><p>一般<code>CTF</code>题都重写了<code>FunctionPass</code>类中的<code>runOnFunction</code>函数</p>
 <h2 id="定位runOnFunction"><a href="#定位runOnFunction" class="headerlink" title="定位runOnFunction"></a>定位<code>runOnFunction</code></h2><h3 id="搜索vtable"><a href="#搜索vtable" class="headerlink" title="搜索vtable"></a>搜索<code>vtable</code></h3><p>用<code>IDA</code>对<code>so</code>模块逆向分析，在<code>IDA</code>中搜索<code>vtable</code>，定位到虚表后，虚表最后的一项<strong>函数</strong>就是重写的<code>runOnFunction</code>函数</p>
-<p><img src="https://gitee.com/Lc10Cl/pic/raw/master/img/20240716232504733.png" srcset="/img/loading.gif" lazyload alt="image-20240716232503434"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/3bab3f2b54be3455d43596cc8b626597.png" srcset="/img/loading.gif" lazyload alt="20240716232504733"></p>
 <h3 id="PASS注册名称"><a href="#PASS注册名称" class="headerlink" title="PASS注册名称"></a><code>PASS</code>注册名称</h3><p>一般会在<code>README</code>文件中给出，若是没有给出，可通过对<code>__cxa_atexit</code>函数“交叉引用”来定位</p>
-<p><img src="https://gitee.com/Lc10Cl/pic/raw/master/img/20240716232841397.png" srcset="/img/loading.gif" lazyload alt="image-20240716232840678"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/5c6db733af49267642c2a951e582d2a1.png" srcset="/img/loading.gif" lazyload alt="20240716232841397"></p>
 <h1 id="GDB调试"><a href="#GDB调试" class="headerlink" title="GDB调试"></a>GDB调试</h1><p>首先用<code>gdb</code>调试<code>opt</code>并用<code>set args</code>设置参数传入，然后在<code>main</code>函数下断点运行即可</p>
 <p>例如</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">gdb <span class="hljs-keyword">opt</span>-<span class="hljs-number">12</span><br><span class="hljs-keyword">set</span> <span class="hljs-keyword">args</span> -load ./LLVMHello.<span class="hljs-keyword">so</span> -Hello ./test.<span class="hljs-keyword">ll</span><br><span class="hljs-keyword">b</span> main<br></code></pre></td></tr></table></figure>
