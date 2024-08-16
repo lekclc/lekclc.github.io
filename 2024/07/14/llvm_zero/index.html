@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="ymixz">
 <meta property="og:description" content="了解LLVMLLVM是构架编译器的框架系统，以C++编写而成，用于优化以任意程序语言编写的程序的编译时间、链接时间、运行时间以及空闲时间，对开发者保持开放，并兼容已有脚本 LLVM PASSpass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化或者对代码插桩等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果  首">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
+<meta property="og:image" content="https://1dc2fae.webp.li/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
 <meta property="article:published_time" content="2024-07-14T04:43:26.000Z">
-<meta property="article:modified_time" content="2024-08-16T07:40:02.231Z">
+<meta property="article:modified_time" content="2024-08-16T07:52:22.160Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="llvm">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
+<meta name="twitter:image" content="https://1dc2fae.webp.li/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
   
   
   
@@ -278,7 +278,7 @@
                 
                 <h1 id="了解"><a href="#了解" class="headerlink" title="了解"></a>了解</h1><h2 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h2><p>LLVM是构架编译器的框架系统，以C++编写而成，用于优化以任意程序语言编写的程序的编译时间、链接时间、运行时间以及空闲时间，对开发者保持开放，并兼容已有脚本</p>
 <h2 id="LLVM-PASS"><a href="#LLVM-PASS" class="headerlink" title="LLVM PASS"></a>LLVM PASS</h2><p>pass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化或者对代码插桩等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp" srcset="/img/loading.gif" lazyload alt="20240710231338721"></p>
+<p><img src="https://1dc2fae.webp.li/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp" srcset="/img/loading.gif" lazyload alt="20240710231338721"></p>
 <p>首先我们的源代码会被clang编译器编译成一种中间代码——IR，IR连接这编译器的前端和后端</p>
 <p>LLVM的各种pass其实都是作用在LLVM IR上的。同时IR也是一个编译器组件接口</p>
 <p>通常情况下，设计一门新的编程语言只需要完成能够生成LLVM IR的编译器前端即可，然后就可以轻松使用LLVM的各种编译优化、JIT支持、目标代码生成等功能</p>
