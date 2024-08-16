@@ -24,10 +24,10 @@
 <meta property="og:description" content="core_ret2usr默认情况下, 内核态的函数在用户空间下是无法运行的, 但用户态的函数在内核空间却可以运行 因此可以在用户空间构造好commit_creds(prepare_kernel_cred(0))，然后在内核空间以ring 0权限来运行 可以对core的exp进行修改 1234567891011121314151617181920212223242526272829303132333">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/Lc10Cl/pic/raw/master/img/20240812173953212.jpeg">
-<meta property="og:image" content="https://1dc2fae.webp.li/2024/08/c9a320ab46a371429b03edc8b8521862.png">
-<meta property="og:image" content="https://1dc2fae.webp.li/2024/08/83cfc469d4047a0a318bf829acfccbdb.png">
+<meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/c9a320ab46a371429b03edc8b8521862.png">
+<meta property="og:image" content="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/83cfc469d4047a0a318bf829acfccbdb.png">
 <meta property="article:published_time" content="2024-08-11T11:35:42.000Z">
-<meta property="article:modified_time" content="2024-08-16T07:52:22.170Z">
+<meta property="article:modified_time" content="2024-08-16T14:16:57.212Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="kernel">
@@ -308,7 +308,7 @@
 
 <p>先将<code>fake_tty_operation</code>填充,然后调试查看信息</p>
 <p>调试发现执行了 <code>call 0xffffffff00000007</code> 即 <code>fake_tty_operation[8]</code></p>
-<p><img src="https://1dc2fae.webp.li/2024/08/c9a320ab46a371429b03edc8b8521862.png" srcset="/img/loading.gif" lazyload alt="20240810174242514"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/c9a320ab46a371429b03edc8b8521862.png" srcset="/img/loading.gif" lazyload alt="20240810174242514"></p>
 <p>并且此时 <code>rax</code>的值为 <code>0xffffffff000000000</code>即 <code>fake_tty_operation[0]</code></p>
 <p>我们利用下面的gadget来控制<code>rsp</code>来转移栈</p>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-number">0xffffffff8181bfc5</span> : <span class="hljs-keyword">mov</span> <span class="hljs-built_in">rsp</span>, <span class="hljs-built_in">rax</span> <span class="hljs-comment">; dec ebx ; jmp 0xffffffff8181bf7e</span><br><span class="hljs-number">0xffffffff8181bf7e</span> <span class="hljs-keyword">ret</span><br><br><span class="hljs-number">0xffffffff810d238d</span> : <span class="hljs-keyword">pop</span> <span class="hljs-built_in">rdi</span> <span class="hljs-comment">; ret</span><br><span class="hljs-number">0xffffffff81004d80</span> : <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cr4</span>, <span class="hljs-built_in">rdi</span> <span class="hljs-comment">; pop rbp ; ret</span><br><span class="hljs-number">0xffffffff8100bbc4</span> : <span class="hljs-keyword">add</span> <span class="hljs-built_in">rsp</span>, <span class="hljs-number">8</span> <span class="hljs-comment">; pop rbx ; pop rbp ; ret</span><br></code></pre></td></tr></table></figure>
@@ -371,7 +371,7 @@
 
 
 
-<p><img src="https://1dc2fae.webp.li/2024/08/83cfc469d4047a0a318bf829acfccbdb.png" srcset="/img/loading.gif" lazyload alt="20240813005150577"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/83cfc469d4047a0a318bf829acfccbdb.png" srcset="/img/loading.gif" lazyload alt="20240813005150577"></p>
 
                 
               </div>
